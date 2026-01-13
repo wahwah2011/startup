@@ -8,6 +8,9 @@
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
 
+
+Here, I am testing to ensure that git commits from VSCode work as they should.
+
 ## AWS
 
 My IP address is: 54.81.96.130
