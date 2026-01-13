@@ -1,14 +1,12 @@
-# Your startup name here
+# Reaction Time
 
 [My Notes](notes.md)
 
-A brief description of the application here. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+_Reaction Time_ is a real-time, competitive study tool designed to gamify the memorization of chemical nomenclature, polyatomic ions, and organic functional groups.
 
-> [!NOTE]
-> This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
+Users register for an account and access a "Study Deck" where they view chemical names (e.g., "Acetate" or "Benzene") and reveal the corresponding chemical formula or structure. The application integrates with the PubChem API to dynamically fetch and render accurate molecular visualizations for each card.
 
-> [!NOTE]
-> If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
+The core technical differentiator is the Real-Time Leaderboard. As users successfully "master" flashcards, their scores are updated in a persistent database and instantly broadcast via Web Sockets to all other connected users. This creates a live, ticking leaderboard where students can see their class ranking change second-by-second as they study, fostering a sense of urgency and competition.
 
 ## 🚀 Specification Deliverable
 
@@ -25,7 +23,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Studying for chemistry is usually a lonely, static experience—you stare and sift through pieces of paper until they are memorized. But we know that competition drives engagement.
+
+_Reaction Time_ turns rote memorization into a live multiplayer race. It’s a flashcard app where you aren't just studying against yourself; you are studying against the entire class in real-time. Imagine sitting in the library, flipping through your organic functional groups, and seeing your name physically jump past your lab partner on the leaderboard because you studied five more cards than they did.
+
+Using real chemical data and real-time socket connections, we ensure that every point you score is felt by everyone else online, making the tedious part of chemistry—memorization—feel like a live e-sport.
 
 ### Design
 
