@@ -4,60 +4,52 @@
 
 _Reaction Time_ is a real-time, competitive study tool designed to gamify the memorization of chemical nomenclature, polyatomic ions, and organic functional groups.
 
-Users register for an account and access a "Study Deck" where they view chemical names (e.g., "Acetate" or "Benzene") and reveal the corresponding chemical formula or structure. The application integrates with the PubChem API to dynamically fetch and render accurate molecular visualizations for each card.
+Users register for an account and access a "Study Deck," where they view chemical names (e.g., "Acetate" or "Benzene") and reveal the corresponding formula or structure. The application integrates with the PubChem API to dynamically fetch and render accurate molecular visualizations for each card.
 
-The core technical differentiator is the Real-Time Leaderboard. As users successfully "master" flashcards, their scores are updated in a persistent database and instantly broadcast via Web Sockets to all other connected users. This creates a live, ticking leaderboard where students can see their class ranking change second-by-second as they study, fostering a sense of urgency and competition.
+The core technical differentiator is the real-time leaderboard. As users successfully "master" flashcards, their scores are updated in a persistent database and instantly broadcast via WebSockets to all connected users. This creates a live, updating leaderboard where students can watch their class ranking shift in real time, fostering a sense of urgency and competition.
 
 ## 🚀 Specification Deliverable
 
-> [!NOTE]
-> Fill in this sections as the submission artifact for this deliverable. You can refer to this [example](https://github.com/webprogramming260/startup-example/blob/main/README.md) for inspiration.
-
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] Proper use of Markdown
+- [x] A concise and compelling elevator pitch
+- [x] Description of key features
+- [x] Description of how you will use each technology
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Studying for chemistry is usually a lonely, static experience—you stare and sift through pieces of paper until they are memorized. But we know that competition drives engagement.
+Studying for chemistry is usually a lonely, static experience—you stare and sift through numerous compounds until, eventually, they are memorized. Knowing that competition drives engagement, _Reaction Time_ turns rote memorization into a live multiplayer race. It's a flashcard app where you aren't just studying against yourself; you're studying against the entire class in real time. Imagine sitting in the library, flipping through organic functional groups, and watching your name leap past your lab partner on the leaderboard because you studied five more cards than they did.
 
-_Reaction Time_ turns rote memorization into a live multiplayer race. It’s a flashcard app where you aren't just studying against yourself; you are studying against the entire class in real-time. Imagine sitting in the library, flipping through your organic functional groups, and seeing your name physically jump past your lab partner on the leaderboard because you studied five more cards than they did.
-
-Using real chemical data and real-time socket connections, we ensure that every point you score is felt by everyone else online, making the tedious part of chemistry—memorization—feel like a live e-sport.
+Using real chemical data and real-time socket connections, every point you score is felt by everyone else online—making the tedious part of chemistry feel like a live esport.
 
 ### Design
 
-![Design image](placeholder.png)
+![Main Page Design](images/main_page_view.png)
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+![Flashcard Page Design](images/flashcard_view.png)
 
-```mermaid
-sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
-```
+![Leaderboard Page Design](images/leaderboard_view.png)
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+The application consists of three distinct pages: main, quiz, and leaderboard.
+
+- The **main page** allows users to log in and, upon authentication, start a quiz or view the leaderboard.
+- The **quiz page** displays a rendered compound and its formula, with an input box for users to guess its name. A miniature leaderboard showing the top two or three players is also visible.
+- The **leaderboard page** shows the current rankings of top "chemists" based on how many flashcards they have completed.
 
 ### Technologies
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Provides the structural foundation for three pages: login/main, quiz (flashcard interface), and leaderboard.
+- **CSS** - Styles the flashcard components, leaderboard rankings, and ensures responsive layout across devices.
+- **React** - Manages UI components (flashcards, score displays), handles routing between pages, and maintains reactive state for quiz progress.
+- **Service** - Backend endpoints for login, user scores and flashcard data, plus integration with the PubChem API to fetch molecular structures.
+- **DB/Login** - Stores user credentials for authentication and persists player scores/progress for leaderboard rankings.
+- **WebSocket** - Broadcasts real-time score updates to all connected users, enabling the live leaderboard experience.
 
 ## 🚀 AWS deliverable
 
