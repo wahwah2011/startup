@@ -22,7 +22,9 @@ No problems worked just like it said in the [instruction](https://github.com/web
 
 ## HTML
 
-HTML works through nodes (parent, child)
+HTML works through nodes (parent, child).
+
+Ensure header and footer show (redundantly) on each page.
 
 ## CSS
 
