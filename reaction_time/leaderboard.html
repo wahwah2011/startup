@@ -25,34 +25,45 @@
         </header>
         
         <main>
-            <main>
-                <table>
-                  <thead>
+            <!-- WEBSOCKET: Real-time connection status -->
+            <div id="connection-status">
+                <p>Live Updates: <span id="ws-status">Connected</span></p>
+            </div>
+
+            <!-- DATABASE & WEBSOCKET: Leaderboard data from database, updated in real-time via WebSocket -->
+            <table>
+                <thead>
                     <tr>
-                      <th>Rank</th>
-                      <th>Chemist</th>
-                      <th>Cards Memorized</th>
+                        <th>Rank</th>
+                        <th>Chemist</th>
+                        <th>Cards Memorized</th>
                     </tr>
-                  </thead>
-                  <tbody>
+                </thead>
+                <tbody>
                     <tr>
-                      <td>1</td>
-                      <td>Lavosier</td>
-                      <td>34</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Curie</td>
-                      <td>29</td>
+                        <td>1</td>
+                        <td>Lavosier</td>
+                        <td>34</td>
                     </tr>
                     <tr>
-                      <td>3</td>
-                      <td>Pasteur</td>
-                      <td>7</td>
+                        <td>2</td>
+                        <td>Curie</td>
+                        <td>29</td>
                     </tr>
-                  </tbody>
-                </table>
-              </main>
+                    <tr>
+                        <td>3</td>
+                        <td>Pasteur</td>
+                        <td>7</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- DATABASE: User's personal stats from database -->
+            <section id="user-stats">
+                <h3>Your Stats</h3>
+                <p>Your Rank: <span id="user-rank">3</span></p>
+                <p>Cards Mastered: <span id="total-cards">7</span></p>
+            </section>
         </main>
 
         <footer>
