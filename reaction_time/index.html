@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
     </head>
+    <body>
     <header>
         <h1>Reaction Time</h1>
         <ul>
@@ -24,6 +25,7 @@
     </header>
 
     <main>
+        <!-- DATABASE: Login credentials will be stored and authenticated via database -->
         <form method="get" action="quiz.html">
             <div>
               <span>Email</span>
@@ -35,7 +37,17 @@
             </div>
             <button type="submit">Login</button>
             <button type="submit">Create</button>
-          </form>
+        </form>
+
+        <!-- DATABASE: User info displayed after login -->
+        <div id="user-display">
+            <p>Logged in as: <span id="username">Guest</span></p>
+        </div>
+
+        <!-- WEBSOCKET: Real-time active users count -->
+        <div id="active-users">
+            <p>Chemists online: <span id="online-count">3</span></p>
+        </div>
     </main>
 
     <footer>
@@ -44,4 +56,5 @@
       <br />
       <a href="https://github.com/wahwah2011/startup">GitHub</a>
     </footer>
+    </body>
 </html>
