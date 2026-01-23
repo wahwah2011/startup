@@ -25,23 +25,38 @@
         </header>
 
         <main>
+            <!-- DATABASE: Current user info from database -->
             <div class="players">
                 Chemist: 
                 <span class="player-name">Pasteur</span>
-              </div>
-              <ul class="notification">
-                <li class="player-name">Lavosier started a new game</li>
-                <li class="player-name">Curie started a new game</li>
-                <li class="player-name">Pasteur scored 337</li>
-              </ul>
+            </div>
+
             <section id="quiz-container">
+                <!-- 3RD PARTY API: PubChem API will fetch molecular structure images -->
                 <img id="lewis-structure" src="../images/Lewis Structures/Methane.png" alt="Lewis Structure">
+
                 <div id="answer-section">
                     <label for="compound-input">Compound Name:</label>
                     <input type="text" id="compound-input" name="compound-input" placeholder="Enter compound name">
                     <button type="submit">Submit</button>
                 </div>
+
+                <!-- DATABASE: User score saved to database -->
+                <div id="score-display">
+                    <p>Your Score: <span id="user-score">0</span></p>
+                    <p>Cards Mastered: <span id="cards-mastered">0</span></p>
+                </div>
             </section>
+
+            <!-- WEBSOCKET: Live mini-leaderboard updated in real-time -->
+            <aside id="mini-leaderboard">
+                <h3>Top Chemists</h3>
+                <ol>
+                    <li>Lavosier - 34</li>
+                    <li>Curie - 29</li>
+                    <li>You - 0</li>
+                </ol>
+            </aside>
         </main>
 
         <footer>

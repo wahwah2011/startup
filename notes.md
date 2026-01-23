@@ -26,6 +26,8 @@ HTML works through nodes (parent, child).
 
 Ensure header and footer show (redundantly) on each page.
 
+I am deciding to fetch lewis structure data from the database, rather than connecting to a third-party API (PubChem) and retreiving the structures from there. I'll have to account for screen size/resolution with this, as I will simply be displaying PNGs of lewis structures.
+
 ## CSS
 
 This took a couple hours to get it how I wanted. It was important to make it responsive and Bootstrap helped with that. It looks great on all kinds of screen sizes.
