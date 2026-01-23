@@ -61,15 +61,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **HTML pages** - I did not complete this part of the deliverable.
-- [x] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [x] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [x] **Images** - I did not complete this part of the deliverable.
-- [x] **Login placeholder** - I did not complete this part of the deliverable.
-- [x] **DB data placeholder** - I did not complete this part of the deliverable.
-- [x] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - Four pages: login (index.html), quiz, leaderboard, and about.
+- [x] **Proper HTML element usage** - Uses BODY, HEADER, NAV, MAIN, FOOTER, SECTION, ASIDE, and TABLE elements appropriately.
+- [x] **Links** - Navigation links between all four pages on every page, plus GitHub link in footer.
+- [x] **Text** - Quiz prompts, leaderboard rankings, user stats, and about page description.
+- [x] **3rd party API placeholder** - PubChem API placeholder for fetching molecular structure images.
+- [x] **Images** - Lewis structure image displayed on the quiz page.
+- [x] **Login placeholder** - Login form with email/password inputs and username display after login.
+- [x] **DB data placeholder** - User scores, leaderboard table rankings, and personal stats sections.
+- [x] **WebSocket placeholder** - Live "Chemists online" count, real-time mini-leaderboard, and connection status indicator.
 
 ## 🚀 CSS deliverable
 
