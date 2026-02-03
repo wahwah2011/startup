@@ -153,6 +153,7 @@ footer a {
 }
 
 .structure-container {
+  /* I was really struggling with this one--because the image has a clear background, I had to ensure its background color was white */
   background-color: var(--background-light);
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -302,4 +303,31 @@ footer a {
   font-weight: 600;
   color: var(--accent-color);
   margin-bottom: 0;
+}
+
+/* ===== About Page Styles ===== */
+.about-card {
+  background-color: var(--card-bg);
+  padding: 1rem;
+}
+
+.about-card .lead {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+}
+
+.about-card hr {
+  border-color: var(--secondary-color);
+  opacity: 0.3;
+}
+
+.author-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 0.25rem;
+}
+
+.text-muted {
+  color: rgba(255, 255, 255, 0.6) !important;
 }
