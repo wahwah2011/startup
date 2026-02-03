@@ -38,7 +38,7 @@
         
         <main class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-lg-10">
+                <div class="col-12">
                     <h2 class="page-title text-center mb-4">Leaderboard</h2>
 
                     <!-- WEBSOCKET: Real-time connection status -->
@@ -60,6 +60,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- For each of the following, need to dynamically update "rank gold", "rank silver", and "rank bronze" with the correct rank and chemist name -->
                                 <tr class="rank-gold">
                                     <td>1</td>
                                     <td>Lavosier</td>
@@ -82,7 +83,7 @@
                     <!-- DATABASE: User's personal stats from database -->
                     <section id="user-stats" class="card mt-4">
                         <div class="card-header">
-                            <h3 class="mb-0">Your Stats</h3>
+                            <h3 class="mb-0 text-center fw-bold">Your Stats</h3>
                         </div>
                         <div class="card-body">
                             <div class="row text-center">

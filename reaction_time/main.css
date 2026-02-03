@@ -229,6 +229,7 @@ footer a {
   background-color: rgba(39, 174, 96, 0.1);
 }
 
+/* ngl, this is super cool--I had no idea I could figure this out with CSS */
 .status-indicator {
   width: 10px;
   height: 10px;
