@@ -331,3 +331,63 @@ footer a {
 .text-muted {
   color: rgba(255, 255, 255, 0.6) !important;
 }
+
+/* ===== Responsive Media Queries ===== */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem 0.5rem;
+  }
+
+  .lewis-image {
+    max-height: 200px;
+  }
+
+  .score-value,
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  #answer-section .input-group {
+    flex-direction: column;
+  }
+
+  #answer-section .input-group-text,
+  #answer-section .form-control,
+  #answer-section .btn {
+    width: 100%;
+    border-radius: 0.375rem !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-height: 500px) {
+  header {
+    position: relative;
+  }
+
+  main {
+    justify-content: flex-start;
+    padding-top: 1rem;
+  }
+
+  footer {
+    padding: 0.5rem;
+  }
+}
+
+/* ===== Utility Classes ===== */
+.text-primary {
+  color: var(--secondary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--accent-color) !important;
+}
+
+.bg-primary {
+  background-color: var(--secondary-color) !important;
+}

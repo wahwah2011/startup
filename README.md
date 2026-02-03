@@ -75,12 +75,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [x] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
-- [x] **Use of a imported font** - I did not complete this part of the deliverable.
-- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [x] **Visually appealing colors and layout. No overflowing elements.** - Applied a chemistry-themed dark color scheme with blues and greens. All elements properly contained with no overflow issues.
+- [x] **Use of a CSS framework** - Integrated Bootstrap 5.3.2 for responsive grid, navbar, cards, tables, forms, and buttons across all pages.
+- [x] **All visual elements styled using CSS** - Styled navigation, login forms, quiz interface, Lewis structure display, leaderboard table, score cards, and about page with consistent theming.
+- [x] **Responsive to window resizing using flexbox and/or grid display** - Body uses flexbox for sticky footer. Bootstrap grid for responsive layouts. Media queries for mobile-friendly input groups and smaller screens.
+- [x] **Use of a imported font** - Imported Google Fonts 'Poppins' with weights 400 and 600 for modern typography.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - Element selectors (body, header, footer, table, h1), class selectors (.card, .navbar, .btn-primary), ID selectors (#quiz-container, #user-score, #mini-leaderboard), and pseudo selectors (:hover, :first-child, @keyframes animations).
 
 ## 🚀 React part 1: Routing deliverable
 
