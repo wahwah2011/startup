@@ -36,46 +36,86 @@
             </nav>
         </header>
 
-        <main>
-            <!-- DATABASE: Current user info from database -->
-            <div class="players">
-                Chemist: 
-                <span class="player-name">Pasteur</span>
+        <main class="container-fluid">
+            <div class="row justify-content-center">
+                <!-- Main Quiz Area -->
+                <div class="col-12 col-lg-8">
+                    <!-- DATABASE: Current user info from database -->
+                    <div class="players card info-card mb-3">
+                        <div class="card-body">
+                            Chemist: 
+                            <span class="player-name fw-bold text-light">Pasteur</span>
+                        </div>
+                    </div>
+
+                    <section id="quiz-container" class="card">
+                        <div class="card-body">
+                            <div class="quiz-layout">
+                                <!-- 3RD PARTY API: PubChem API will fetch molecular structure images -->
+                                <div class="structure-container text-center">
+                                    <img id="lewis-structure" src="Methane.png" alt="Lewis Structure" class="lewis-image">
+                                </div>
+
+                                <div id="answer-section" class="mt-4">
+                                    <div class="input-group">
+                                        <label for="compound-input" class="input-group-text">Compound Name:</label>
+                                        <input type="text" id="compound-input" name="compound-input" class="form-control" placeholder="Enter compound name">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+
+                                <!-- DATABASE: User score saved to database -->
+                                <div id="score-display" class="row mt-4">
+                                    <div class="col-6">
+                                        <div class="score-card text-center">
+                                            <p class="score-label mb-1">Your Score</p>
+                                            <p class="score-value" id="user-score">0</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="score-card text-center">
+                                            <p class="score-label mb-1">Cards Mastered</p>
+                                            <p class="score-value" id="cards-mastered">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Mini Leaderboard Sidebar -->
+                <div class="col-12 col-lg-3 mt-3 mt-lg-0">
+                    <!-- WEBSOCKET: Live mini-leaderboard updated in real-time -->
+                    <aside id="mini-leaderboard" class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">Top Chemists</h3>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>1. Lavosier</span>
+                                <span class="badge bg-primary">34</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>2. Curie</span>
+                                <span class="badge bg-primary">29</span>
+                            </li>
+                            <!-- going to need to update this to dynamically determine current user's standing and display it with the correct badge color -->
+                            <li class="list-group-item d-flex justify-content-between active-user">
+                                <span>3. You</span>
+                                <span class="badge bg-success">0</span>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
             </div>
-
-            <section id="quiz-container">
-                <!-- 3RD PARTY API: PubChem API will fetch molecular structure images -->
-                <img id="lewis-structure" src="Methane.png" alt="Lewis Structure">
-
-                <div id="answer-section">
-                    <label for="compound-input">Compound Name:</label>
-                    <input type="text" id="compound-input" name="compound-input" placeholder="Enter compound name">
-                    <button type="submit">Submit</button>
-                </div>
-
-                <!-- DATABASE: User score saved to database -->
-                <div id="score-display">
-                    <p>Your Score: <span id="user-score">0</span></p>
-                    <p>Cards Mastered: <span id="cards-mastered">0</span></p>
-                </div>
-            </section>
-
-            <!-- WEBSOCKET: Live mini-leaderboard updated in real-time -->
-            <aside id="mini-leaderboard">
-                <h3>Top Chemists</h3>
-                <ol>
-                    <li>Lavosier - 34</li>
-                    <li>Curie - 29</li>
-                    <li>You - 0</li>
-                </ol>
-            </aside>
         </main>
 
-        <footer>
-            <hr />
-            <span class="text-reset">Elijah Thompson</span>
-            <br />
-            <a href="https://github.com/wahwah2011/startup">GitHub</a>
+        <footer class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-reset">Elijah Thompson</span>
+                <a href="https://github.com/wahwah2011/startup">GitHub</a>
+            </div>
         </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
