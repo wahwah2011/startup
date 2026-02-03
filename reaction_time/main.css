@@ -61,6 +61,11 @@ a:hover {
 }
 
 /* ===== Class Selectors ===== */
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
 .text-reset {
   color: var(--text-light) !important;
 }
