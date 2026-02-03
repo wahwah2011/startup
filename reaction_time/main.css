@@ -79,3 +79,64 @@ footer hr {
 footer a {
   margin-left: 1rem;
 }
+
+/* ===== Card Styles ===== */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--secondary-color);
+  border-radius: 0.5rem;
+  color: var(--text-light);
+}
+
+.card-title {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.login-card {
+  padding: 1rem;
+}
+
+.info-card {
+  background-color: rgba(52, 73, 94, 0.7);
+}
+
+/* ===== Form Styles ===== */
+.input-group-text {
+  background-color: var(--secondary-color);
+  border: none;
+  color: var(--text-light);
+}
+
+.form-control {
+  background-color: var(--background-light);
+  border: 1px solid var(--secondary-color);
+}
+
+.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+}
+
+/* ===== Button Styles ===== */
+.btn-primary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.btn-outline-secondary {
+  color: var(--text-light);
+  border-color: var(--text-light);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--text-light);
+  color: var(--primary-color);
+}
