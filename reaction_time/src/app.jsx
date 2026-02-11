@@ -1,12 +1,12 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 
-import { Login } from './login/login';
-import { Quiz } from './quiz/quiz';
-import { Leaderboard } from './leaderboard/leaderboard';
-import { About } from './about/about';
+import { Login } from "./login/login";
+import { Quiz } from "./quiz/quiz";
+import { Leaderboard } from "./leaderboard/leaderboard";
+import { About } from "./about/about";
 
-import './app.css';
+import "./app.css";
 
 export default function App() {
   return (

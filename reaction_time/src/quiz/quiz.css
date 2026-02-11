@@ -1,0 +1,101 @@
+/* ===== Quiz Page Styles ===== */
+#quiz-container {
+  background-color: var(--card-bg);
+}
+
+.quiz-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.structure-container {
+  /* I was really struggling with this one--because the image has a clear background, I had to ensure its background color was white */
+  background-color: var(--background-light);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.lewis-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 0.25rem;
+}
+
+.score-card {
+  background-color: rgba(52, 152, 219, 0.2);
+  border: 1px solid var(--secondary-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 0;
+}
+
+.player-name {
+  color: var(--secondary-color);
+}
+
+/* ===== Mini Leaderboard Styles ===== */
+#mini-leaderboard {
+  background-color: var(--card-bg);
+}
+
+#mini-leaderboard .card-header {
+  background-color: var(--primary-color);
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+#mini-leaderboard h3 {
+  font-size: 1.1rem;
+  color: var(--text-light);
+}
+
+#mini-leaderboard .list-group-item {
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+#mini-leaderboard .list-group-item:first-child {
+  color: gold;
+  font-weight: 600;
+}
+
+#mini-leaderboard .active-user {
+  background-color: rgba(39, 174, 96, 0.2);
+  border-left: 3px solid var(--accent-color);
+}
+
+/* ===== Quiz Responsive ===== */
+@media (max-width: 768px) {
+  .lewis-image {
+    max-height: 200px;
+  }
+
+  .score-value {
+    font-size: 1.8rem;
+  }
+
+  #answer-section .input-group {
+    flex-direction: column;
+  }
+
+  #answer-section .input-group-text,
+  #answer-section .form-control,
+  #answer-section .btn {
+    width: 100%;
+    border-radius: 0.375rem !important;
+    margin-bottom: 0.5rem;
+  }
+}
