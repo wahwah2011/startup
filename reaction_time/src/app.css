@@ -21,7 +21,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-  background-color: var(--background-dark);
+  background-color: var(--background-dark) !important;
   color: var(--text-light);
 }
 
