@@ -16,13 +16,13 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
   background-color: var(--background-dark) !important;
-  color: var(--text-light);
+  color: var(--text-light) !important;
 }
 
 header {
@@ -42,21 +42,23 @@ footer {
   flex: 0 0 auto;
   text-align: center;
   padding: 1rem;
-  background-color: var(--primary-color);
-  border-top: 1px solid var(--secondary-color);
+  background-color: var(--primary-color) !important;
+  border-top: 1px solid var(--secondary-color) !important;
 }
 
-h1, h2, h3 {
-  color: var(--text-light);
+h1,
+h2,
+h3 {
+  color: var(--text-light) !important;
 }
 
 a {
-  color: var(--secondary-color);
+  color: var(--secondary-color) !important;
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
   text-decoration: underline;
 }
 
@@ -72,7 +74,7 @@ a:hover {
 
 /* ===== Footer Styling ===== */
 footer hr {
-  border-color: var(--secondary-color);
+  border-color: var(--secondary-color) !important;
   margin-bottom: 0.5rem;
 }
 
@@ -82,59 +84,59 @@ footer a {
 
 /* ===== Card Styles (shared) ===== */
 .card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--secondary-color);
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--secondary-color) !important;
   border-radius: 0.5rem;
-  color: var(--text-light);
+  color: var(--text-light) !important;
 }
 
 .card-title {
-  color: var(--secondary-color);
+  color: var(--secondary-color) !important;
   font-weight: 600;
 }
 
 .info-card {
-  background-color: rgba(52, 73, 94, 0.7);
+  background-color: rgba(52, 73, 94, 0.7) !important;
 }
 
 /* ===== Form Styles ===== */
 .input-group-text {
-  background-color: var(--secondary-color);
-  border: none;
-  color: var(--text-light);
+  background-color: var(--secondary-color) !important;
+  border: none !important;
+  color: var(--text-light) !important;
 }
 
 .form-control {
-  background-color: var(--background-light);
-  border: 1px solid var(--secondary-color);
+  background-color: var(--background-light) !important;
+  border: 1px solid var(--secondary-color) !important;
 }
 
 .form-control:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25) !important;
 }
 
 /* ===== Button Styles ===== */
 .btn-primary {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
+  background-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color) !important;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
+  background-color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
   transform: translateY(-2px);
   transition: all 0.2s ease;
 }
 
 .btn-outline-secondary {
-  color: var(--text-light);
-  border-color: var(--text-light);
+  color: var(--text-light) !important;
+  border-color: var(--text-light) !important;
 }
 
 .btn-outline-secondary:hover {
-  background-color: var(--text-light);
-  color: var(--primary-color);
+  background-color: var(--text-light) !important;
+  color: var(--primary-color) !important;
 }
 
 /* ===== Shared Responsive Media Queries ===== */

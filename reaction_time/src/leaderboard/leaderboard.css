@@ -1,11 +1,11 @@
 /* ===== Leaderboard Page Styles ===== */
 .page-title {
-  color: var(--secondary-color);
+  color: var(--secondary-color) !important;
   font-weight: 600;
 }
 
 #connection-status {
-  background-color: rgba(39, 174, 96, 0.1);
+  background-color: rgba(39, 174, 96, 0.1) !important;
 }
 
 /* ngl, this is super cool--I had no idea I could figure this out with CSS */
@@ -34,44 +34,44 @@
 }
 
 .table thead th {
-  background-color: var(--primary-color);
-  border-bottom: 2px solid var(--secondary-color);
-  color: var(--secondary-color);
+  background-color: var(--primary-color) !important;
+  border-bottom: 2px solid var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
   font-weight: 600;
 }
 
 .rank-gold td:first-child {
-  color: gold;
+  color: gold !important;
   font-weight: bold;
 }
 
 .rank-silver td:first-child {
-  color: silver;
+  color: silver !important;
   font-weight: bold;
 }
 
 .rank-bronze td:first-child {
-  color: #cd7f32;
+  color: #cd7f32 !important;
   font-weight: bold;
 }
 
 /* User Stats Section */
 #user-stats {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg) !important;
 }
 
 #user-stats .card-header {
-  background-color: var(--primary-color);
-  border-bottom: 2px solid var(--accent-color);
+  background-color: var(--primary-color) !important;
+  border-bottom: 2px solid var(--accent-color) !important;
 }
 
 #user-stats h3 {
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
   font-size: 1.2rem;
 }
 
 .stat-label {
-  color: var(--secondary-color);
+  color: var(--secondary-color) !important;
   font-size: 0.9rem;
   margin-bottom: 0.25rem;
 }
@@ -79,7 +79,7 @@
 .stat-value {
   font-size: 2.5rem;
   font-weight: 600;
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
   margin-bottom: 0;
 }
 
