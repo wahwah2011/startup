@@ -8,7 +8,6 @@
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
 
-
 Here, I am testing to ensure that git commits from VSCode work as they should.
 
 ## AWS
@@ -34,7 +33,12 @@ I'm going to need to keep track of usernames/consider the need for emails in the
 
 ## React Part 1: Routing
 
-Setting up Vite and React was pretty simple. I had a bit of trouble because of conflicting CSS. This isn't as straight forward as you would find with Svelte or Vue, but I made it work in the end. If there was a ton of CSS it would be a real problem. It sure was nice to have the code structured in a more usable way.
+- Bootstrap CSS conflicts: Bootstrap aggressively sets background-color, color, border, etc. on .card, .list-group-item, .card-header, body, and more. When using a custom theme alongside Bootstrap, you need !important on essentially every property that overrides Bootstrap defaults.
+- CSS splitting: Broke the monolithic app.css into per-component CSS files (login.css, quiz.css, leaderboard.css, about.css) with shared/global styles remaining in app.css. Each component imports its own CSS.
+- Vite + React setup: Need @vitejs/plugin-react for JSX support and hot module replacement. Without it, Vite won't process .jsx files correctly.
+- NavLink vs anchor tags: React Router's NavLink automatically adds an active class to the current route's link, replacing the manual class="nav-link active" pattern from the static HTML pages.
+- HTML to JSX gotchas: class becomes className, for becomes htmlFor, self-closing tags like <hr /> and <img />, and HTML comments become {/_ JSX comments _/}.
+- Google Fonts: Don't forget to add the font link to index.html — it was in every original HTML page's head but easy to miss when consolidating into a single SPA entry point.
 
 ## React Part 2: Reactivity
 

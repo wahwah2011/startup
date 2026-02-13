@@ -86,9 +86,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - Configured Vite with @vitejs/plugin-react to bundle the application. Entry point is index.jsx which loads Bootstrap CSS and the root App component.
+- [x] **Components** - Created four React components (Login, Quiz, Leaderboard, About) that contain the full HTML and CSS from the original static pages. Shared Navbar and Footer live in app.jsx. Each component has its own CSS file split from the original app.css.
+- [x] **Router** - Implemented react-router-dom with BrowserRouter and NavLink for active-state highlighting. Routes: / (Login), /quiz (Quiz), /leaderboard (Leaderboard), /about (About), plus a 404 catch-all.
 
 ## 🚀 React part 2: Reactivity deliverable
 
