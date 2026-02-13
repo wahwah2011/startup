@@ -1,6 +1,6 @@
 /* ===== Quiz Page Styles ===== */
 #quiz-container {
-  background-color: var(--card-bg) !important;
+  background-color: var(--card-bg);
 }
 
 .quiz-layout {
@@ -25,56 +25,56 @@
 
 .score-card {
   background-color: rgba(52, 152, 219, 0.2);
-  border: 1px solid var(--secondary-color) !important;
+  border: 1px solid var(--secondary-color);
   border-radius: 0.5rem;
   padding: 1rem;
 }
 
 .score-label {
   font-size: 0.9rem;
-  color: var(--secondary-color) !important;
+  color: var(--secondary-color);
 }
 
 .score-value {
   font-size: 2rem;
   font-weight: 600;
-  color: var(--accent-color) !important;
+  color: var(--accent-color);
   margin-bottom: 0;
 }
 
 .player-name {
-  color: var(--secondary-color) !important;
+  color: var(--secondary-color);
 }
 
 /* ===== Mini Leaderboard Styles ===== */
 #mini-leaderboard {
-  background-color: var(--card-bg) !important;
+  background-color: var(--card-bg);
 }
 
 #mini-leaderboard .card-header {
-  background-color: var(--primary-color) !important;
-  border-bottom: 2px solid var(--secondary-color) !important;
+  background-color: var(--primary-color);
+  border-bottom: 2px solid var(--secondary-color);
 }
 
 #mini-leaderboard h3 {
   font-size: 1.1rem;
-  color: var(--text-light) !important;
+  color: var(--text-light);
 }
 
 #mini-leaderboard .list-group-item {
-  background-color: var(--card-bg) !important;
-  color: var(--text-light) !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: var(--card-bg);
+  color: var(--text-light);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 #mini-leaderboard .list-group-item:first-child {
-  color: gold !important;
+  color: gold;
   font-weight: 600;
 }
 
 #mini-leaderboard .active-user {
-  background-color: rgba(39, 174, 96, 0.2) !important;
-  border-left: 3px solid var(--accent-color) !important;
+  background-color: rgba(39, 174, 96, 0.2);
+  border-left: 3px solid var(--accent-color);
 }
 
 /* ===== Quiz Responsive ===== */

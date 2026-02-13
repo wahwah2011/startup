@@ -1,22 +1,22 @@
 /* ===== About Page Styles ===== */
 .about-card {
-  background-color: var(--card-bg) !important;
+  background-color: var(--card-bg);
   padding: 1rem;
 }
 
 .about-card .lead {
-  color: var(--secondary-color) !important;
+  color: var(--secondary-color);
   font-size: 1.1rem;
 }
 
 .about-card hr {
-  border-color: var(--secondary-color) !important;
+  border-color: var(--secondary-color);
   opacity: 0.3;
 }
 
 .author-name {
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--accent-color) !important;
+  color: var(--accent-color);
   margin-bottom: 0.25rem;
 }

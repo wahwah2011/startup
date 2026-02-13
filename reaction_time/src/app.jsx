@@ -6,12 +6,10 @@ import { Quiz } from "./quiz/quiz";
 import { Leaderboard } from "./leaderboard/leaderboard";
 import { About } from "./about/about";
 
-import "./app.css";
-
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="d-flex flex-column min-vh-100">
+      <div className="d-flex flex-column flex-grow-1">
         {/* Navbar */}
         <header>
           <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
