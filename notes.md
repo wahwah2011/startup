@@ -37,7 +37,7 @@ I'm going to need to keep track of usernames/consider the need for emails in the
 - CSS splitting: Broke the monolithic app.css into per-component CSS files (login.css, quiz.css, leaderboard.css, about.css) with shared/global styles remaining in app.css. Each component imports its own CSS.
 - Vite + React setup: Need @vitejs/plugin-react for JSX support and hot module replacement. Without it, Vite won't process .jsx files correctly.
 - NavLink vs anchor tags: React Router's NavLink automatically adds an active class to the current route's link, replacing the manual class="nav-link active" pattern from the static HTML pages.
-- HTML to JSX gotchas: class becomes className, for becomes htmlFor, self-closing tags like <hr /> and <img />, and HTML comments become {/_ JSX comments _/}.
+- HTML to JSX gotchas: class becomes className, for becomes htmlFor, self-closing tags like `<hr />` and `<img />`, and HTML comments become {/_ JSX comments _/}.
 - Google Fonts: Don't forget to add the font link to index.html — it was in every original HTML page's head but easy to miss when consolidating into a single SPA entry point.
 
 ## React Part 2: Reactivity
