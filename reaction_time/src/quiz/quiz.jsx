@@ -1,7 +1,18 @@
-﻿import React from "react";
+﻿import React, { useState } from "react";
+import { flashcards } from "../data/flashcards";
 import "./quiz.css";
 
 export function Quiz({ userName }) {
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [userAnswer, setUserAnswer] = useState("");
+
+  const currentCard = flashcards[currentCardIndex];
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    // Answer validation will be added in the next commit
+  }
+
   return (
     <main className="container-fluid">
       <div className="row justify-content-center">
@@ -11,6 +22,9 @@ export function Quiz({ userName }) {
             <div className="card-body">
               Chemist:{" "}
               <span className="player-name fw-bold text-light">{userName}</span>
+              <span className="ms-3 text-muted">
+                Card {currentCardIndex + 1} of {flashcards.length}
+              </span>
             </div>
           </div>
 
@@ -20,32 +34,35 @@ export function Quiz({ userName }) {
                 <div className="structure-container text-center">
                   <img
                     id="lewis-structure"
-                    src="/images/acetic_acid.png"
+                    src={currentCard.image}
                     alt="Lewis Structure"
                     className="lewis-image"
                   />
                 </div>
 
-                <div id="answer-section" className="mt-4">
-                  <div className="input-group">
-                    <label
-                      htmlFor="compound-input"
-                      className="input-group-text"
-                    >
-                      Compound Name:
-                    </label>
-                    <input
-                      type="text"
-                      id="compound-input"
-                      name="compound-input"
-                      className="form-control"
-                      placeholder="Enter compound name"
-                    />
-                    <button type="submit" className="btn btn-primary">
-                      Submit
-                    </button>
+                <form onSubmit={handleSubmit}>
+                  <div id="answer-section" className="mt-4">
+                    <div className="input-group">
+                      <label
+                        htmlFor="compound-input"
+                        className="input-group-text"
+                      >
+                        Compound Name:
+                      </label>
+                      <input
+                        type="text"
+                        id="compound-input"
+                        className="form-control"
+                        placeholder="Enter compound name"
+                        value={userAnswer}
+                        onChange={(e) => setUserAnswer(e.target.value)}
+                      />
+                      <button type="submit" className="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </form>
 
                 <div id="score-display" className="row mt-4">
                   <div className="col-6">
