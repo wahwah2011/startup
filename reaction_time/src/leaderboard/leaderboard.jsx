@@ -1,7 +1,7 @@
-import React from 'react';
-import './leaderboard.css';
+﻿import React from "react";
+import "./leaderboard.css";
 
-export function Leaderboard() {
+export function Leaderboard({ userName }) {
   return (
     <main className="container">
       <div className="row justify-content-center">
@@ -12,11 +12,15 @@ export function Leaderboard() {
           <div id="connection-status" className="card info-card mb-3">
             <div className="card-body d-flex align-items-center justify-content-center gap-2">
               <span className="status-indicator"></span>
-              <p className="mb-0">Live Updates: <span id="ws-status" className="badge bg-success">Connected</span></p>
+              <p className="mb-0">
+                Live Updates:{" "}
+                <span id="ws-status" className="badge bg-success">
+                  Connected
+                </span>
+              </p>
             </div>
           </div>
 
-          {/* DATABASE & WEBSOCKET: Leaderboard data from database, updated in real-time via WebSocket */}
           <div className="table-responsive">
             <table className="table table-dark table-striped table-hover">
               <thead>
@@ -27,7 +31,6 @@ export function Leaderboard() {
                 </tr>
               </thead>
               <tbody>
-                {/* For each of the following, need to dynamically update "rank gold", "rank silver", and "rank bronze" with the correct rank and chemist name */}
                 <tr className="rank-gold">
                   <td>1</td>
                   <td>Lavosier</td>
@@ -40,27 +43,32 @@ export function Leaderboard() {
                 </tr>
                 <tr className="rank-bronze">
                   <td>3</td>
-                  <td>Pasteur</td>
-                  <td>7</td>
+                  <td>{userName || "You"}</td>
+                  <td>0</td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          {/* DATABASE: User's personal stats from database */}
           <section id="user-stats" className="card mt-4">
             <div className="card-header">
-              <h3 className="mb-0 text-center fw-bold">Your Stats</h3>
+              <h3 className="mb-0 text-center fw-bold">
+                {userName ? userName + "'s Stats" : "Your Stats"}
+              </h3>
             </div>
             <div className="card-body">
               <div className="row text-center">
                 <div className="col-6">
                   <p className="stat-label">Your Rank</p>
-                  <p className="stat-value" id="user-rank">3</p>
+                  <p className="stat-value" id="user-rank">
+                    3
+                  </p>
                 </div>
                 <div className="col-6">
                   <p className="stat-label">Cards Mastered</p>
-                  <p className="stat-value" id="total-cards">7</p>
+                  <p className="stat-value" id="total-cards">
+                    0
+                  </p>
                 </div>
               </div>
             </div>
