@@ -1,6 +1,7 @@
-﻿import React, { useState, useEffect } from "react";
-import { flashcards } from "../data/flashcards";
-import "./quiz.css";
+﻿import React, { useState, useEffect } from 'react';
+import { flashcards } from '../data/flashcards';
+import { MOCK_PLAYERS, buildLeaderboard } from '../data/players';
+import './quiz.css';
 
 function findNextUnmastered(masteredIds, startIndex) {
   for (let i = 0; i < flashcards.length; i++) {
@@ -14,16 +15,17 @@ function findNextUnmastered(masteredIds, startIndex) {
 
 export function Quiz({ userName }) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [userAnswer, setUserAnswer] = useState("");
+  const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [cardsMastered, setCardsMastered] = useState(0);
   const [masteredIds, setMasteredIds] = useState([]);
   const [missedIds, setMissedIds] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [miniBoard, setMiniBoard] = useState([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("quizProgress");
+    const saved = localStorage.getItem('quizProgress');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
@@ -32,10 +34,7 @@ export function Quiz({ userName }) {
         setCardsMastered(data.cardsMastered || 0);
         setMasteredIds(restoredMastered);
         setMissedIds(data.missedIds || []);
-        const resumeIndex = findNextUnmastered(
-          restoredMastered,
-          data.currentCardIndex || 0,
-        );
+        const resumeIndex = findNextUnmastered(restoredMastered, data.currentCardIndex || 0);
         if (resumeIndex >= 0) {
           setCurrentCardIndex(resumeIndex);
         }
@@ -46,26 +45,16 @@ export function Quiz({ userName }) {
 
   useEffect(() => {
     if (!loaded) return;
-    localStorage.setItem(
-      "quizProgress",
-      JSON.stringify({
-        userName,
-        score,
-        cardsMastered,
-        masteredIds,
-        missedIds,
-        currentCardIndex,
-      }),
-    );
-  }, [
-    score,
-    cardsMastered,
-    masteredIds,
-    missedIds,
-    currentCardIndex,
-    userName,
-    loaded,
-  ]);
+    localStorage.setItem('quizProgress', JSON.stringify({
+      userName,
+      score,
+      cardsMastered,
+      masteredIds,
+      missedIds,
+      currentCardIndex,
+    }));
+    setMiniBoard(buildLeaderboard(userName, score, MOCK_PLAYERS).slice(0, 3));
+  }, [score, cardsMastered, masteredIds, missedIds, currentCardIndex, userName, loaded]);
 
   const allMastered = masteredIds.length >= flashcards.length;
   const currentCard = allMastered ? null : flashcards[currentCardIndex];
@@ -74,8 +63,7 @@ export function Quiz({ userName }) {
     e.preventDefault();
     if (allMastered || !userAnswer.trim()) return;
 
-    const correct =
-      userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
+    const correct = userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
 
     if (correct) {
       setScore((s) => s + 1);
@@ -88,7 +76,7 @@ export function Quiz({ userName }) {
         setMasteredIds(newMastered);
       }
       setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
-      setFeedback("correct");
+      setFeedback('correct');
 
       setTimeout(() => {
         const nextIdx = findNextUnmastered(newMastered, currentCardIndex + 1);
@@ -97,21 +85,21 @@ export function Quiz({ userName }) {
         } else {
           setCurrentCardIndex(nextIdx);
         }
-        setUserAnswer("");
+        setUserAnswer('');
         setFeedback(null);
       }, 1000);
     } else {
       if (!missedIds.includes(currentCard.id)) {
         setMissedIds((prev) => [...prev, currentCard.id]);
       }
-      setFeedback("incorrect");
+      setFeedback('incorrect');
       setTimeout(() => setFeedback(null), 1500);
     }
   }
 
   function handleRestart() {
     setCurrentCardIndex(0);
-    setUserAnswer("");
+    setUserAnswer('');
     setFeedback(null);
     setScore(0);
     setCardsMastered(0);
@@ -120,15 +108,13 @@ export function Quiz({ userName }) {
   }
 
   function getInputClass() {
-    let cls = "form-control";
-    if (feedback === "correct") cls += " is-valid";
-    if (feedback === "incorrect") cls += " is-invalid";
+    let cls = 'form-control';
+    if (feedback === 'correct') cls += ' is-valid';
+    if (feedback === 'incorrect') cls += ' is-invalid';
     return cls;
   }
 
-  const needsReview = missedIds.filter(
-    (id) => !masteredIds.includes(id),
-  ).length;
+  const needsReview = missedIds.filter((id) => !masteredIds.includes(id)).length;
 
   return (
     <main className="container-fluid">
@@ -137,7 +123,7 @@ export function Quiz({ userName }) {
         <div className="col-12 col-lg-8">
           <div className="players card info-card mb-3">
             <div className="card-body">
-              Chemist:{" "}
+              Chemist:{' '}
               <span className="player-name fw-bold text-light">{userName}</span>
               {!allMastered && (
                 <span className="ms-3 text-muted">
@@ -153,9 +139,7 @@ export function Quiz({ userName }) {
                 {allMastered ? (
                   <div className="text-center py-4">
                     <h3 className="text-light mb-3">All Cards Mastered!</h3>
-                    <p className="text-muted">
-                      You've mastered all {flashcards.length} compounds.
-                    </p>
+                    <p className="text-muted">You've mastered all {flashcards.length} compounds.</p>
                     <button className="btn btn-primary" onClick={handleRestart}>
                       Restart Deck
                     </button>
@@ -174,10 +158,7 @@ export function Quiz({ userName }) {
                     <form onSubmit={handleSubmit}>
                       <div id="answer-section" className="mt-4">
                         <div className="input-group">
-                          <label
-                            htmlFor="compound-input"
-                            className="input-group-text"
-                          >
+                          <label htmlFor="compound-input" className="input-group-text">
                             Compound Name:
                           </label>
                           <input
@@ -187,25 +168,17 @@ export function Quiz({ userName }) {
                             placeholder="Enter compound name"
                             value={userAnswer}
                             onChange={(e) => setUserAnswer(e.target.value)}
-                            disabled={feedback === "correct"}
+                            disabled={feedback === 'correct'}
                           />
-                          <button
-                            type="submit"
-                            className="btn btn-primary"
-                            disabled={feedback === "correct"}
-                          >
+                          <button type="submit" className="btn btn-primary" disabled={feedback === 'correct'}>
                             Submit
                           </button>
                         </div>
-                        {feedback === "incorrect" && (
-                          <div className="text-danger mt-2 text-center fw-bold">
-                            Try again!
-                          </div>
+                        {feedback === 'incorrect' && (
+                          <div className="text-danger mt-2 text-center fw-bold">Try again!</div>
                         )}
-                        {feedback === "correct" && (
-                          <div className="text-success mt-2 text-center fw-bold">
-                            Correct!
-                          </div>
+                        {feedback === 'correct' && (
+                          <div className="text-success mt-2 text-center fw-bold">Correct!</div>
                         )}
                       </div>
                     </form>
@@ -228,14 +201,7 @@ export function Quiz({ userName }) {
                   <div className="col-4">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Needs Review</p>
-                      <p
-                        className="score-value"
-                        style={{
-                          color: needsReview > 0 ? "#e74c3c" : undefined,
-                        }}
-                      >
-                        {needsReview}
-                      </p>
+                      <p className="score-value" style={{color: needsReview > 0 ? '#e74c3c' : undefined}}>{needsReview}</p>
                     </div>
                   </div>
                 </div>
@@ -251,18 +217,15 @@ export function Quiz({ userName }) {
               <h3 className="mb-0">Top Chemists</h3>
             </div>
             <ul className="list-group list-group-flush">
-              <li className="list-group-item d-flex justify-content-between">
-                <span>1. Lavosier</span>
-                <span className="badge bg-primary">16</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between">
-                <span>2. Curie</span>
-                <span className="badge bg-primary">15</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between active-user">
-                <span>3. {userName}</span>
-                <span className="badge bg-success">{score}</span>
-              </li>
+              {miniBoard.map((player, index) => (
+                <li
+                  key={player.name}
+                  className={'list-group-item d-flex justify-content-between' + (player.isUser ? ' active-user' : '')}
+                >
+                  <span>{index + 1}. {player.isUser ? userName : player.name}</span>
+                  <span className={'badge ' + (player.isUser ? 'bg-success' : 'bg-primary')}>{player.score}</span>
+                </li>
+              ))}
             </ul>
           </aside>
         </div>

@@ -1,39 +1,24 @@
-﻿import React, { useState, useEffect } from "react";
-import "./leaderboard.css";
-
-const MOCK_PLAYERS = [
-  { name: "Lavoisier", score: 2 },
-  { name: "Curie", score: 15 },
-  { name: "Dalton", score: 10 },
-  { name: "Mendeleev", score: 7 },
-  { name: "Pasteur", score: 16 },
-];
-
-const RANK_CLASSES = ["rank-gold", "rank-silver", "rank-bronze"];
+﻿import React, { useState, useEffect } from 'react';
+import { MOCK_PLAYERS, RANK_CLASSES, buildLeaderboard } from '../data/players';
+import './leaderboard.css';
 
 export function Leaderboard({ userName }) {
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
     let userScore = 0;
-    const saved = localStorage.getItem("quizProgress");
+    const saved = localStorage.getItem('quizProgress');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
         userScore = data.score || 0;
       }
     }
-
-    const combined = [
-      ...MOCK_PLAYERS,
-      { name: userName || "You", score: userScore, isUser: true },
-    ];
-    combined.sort((a, b) => b.score - a.score);
-    setPlayers(combined);
+    setPlayers(buildLeaderboard(userName, userScore, MOCK_PLAYERS));
   }, [userName]);
 
   const userEntry = players.find((p) => p.isUser);
-  const userRank = userEntry ? players.indexOf(userEntry) + 1 : "-";
+  const userRank = userEntry ? players.indexOf(userEntry) + 1 : '-';
 
   return (
     <main className="container">
@@ -45,12 +30,7 @@ export function Leaderboard({ userName }) {
           <div id="connection-status" className="card info-card mb-3">
             <div className="card-body d-flex align-items-center justify-content-center gap-2">
               <span className="status-indicator"></span>
-              <p className="mb-0">
-                Live Updates:{" "}
-                <span id="ws-status" className="badge bg-success">
-                  Connected
-                </span>
-              </p>
+              <p className="mb-0">Live Updates: <span id="ws-status" className="badge bg-success">Connected</span></p>
             </div>
           </div>
 
@@ -65,11 +45,9 @@ export function Leaderboard({ userName }) {
               </thead>
               <tbody>
                 {players.map((player, index) => (
-                  <tr key={player.name} className={RANK_CLASSES[index] || ""}>
+                  <tr key={player.name} className={RANK_CLASSES[index] || ''}>
                     <td>{index + 1}</td>
-                    <td>
-                      {player.isUser ? player.name + " (You)" : player.name}
-                    </td>
+                    <td>{player.isUser ? player.name + ' (You)' : player.name}</td>
                     <td>{player.score}</td>
                   </tr>
                 ))}
@@ -79,9 +57,7 @@ export function Leaderboard({ userName }) {
 
           <section id="user-stats" className="card mt-4">
             <div className="card-header">
-              <h3 className="mb-0 text-center fw-bold">
-                {userName ? userName + "'s Stats" : "Your Stats"}
-              </h3>
+              <h3 className="mb-0 text-center fw-bold">{userName ? userName + "'s Stats" : "Your Stats"}</h3>
             </div>
             <div className="card-body">
               <div className="row text-center">
@@ -91,9 +67,7 @@ export function Leaderboard({ userName }) {
                 </div>
                 <div className="col-6">
                   <p className="stat-label">Cards Mastered</p>
-                  <p className="stat-value">
-                    {userEntry ? userEntry.score : 0}
-                  </p>
+                  <p className="stat-value">{userEntry ? userEntry.score : 0}</p>
                 </div>
               </div>
             </div>
