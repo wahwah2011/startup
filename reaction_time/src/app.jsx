@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, Navigate } from "react-router-dom";
 
 import { Login } from "./login/login";
 import { Quiz } from "./quiz/quiz";
@@ -17,7 +17,6 @@ export default function App() {
   }, []);
 
   function handleLogin(name) {
-    console.log("handleLogin", name);
     localStorage.setItem("userName", name);
     setUserName(name);
   }
@@ -91,7 +90,10 @@ export default function App() {
             }
             exact
           />
-          <Route path="/quiz" element={<Quiz userName={userName} />} />
+          <Route
+            path="/quiz"
+            element={userName ? <Quiz userName={userName} /> : <Navigate to="/" replace />}
+          />
           <Route
             path="/leaderboard"
             element={<Leaderboard userName={userName} />}
