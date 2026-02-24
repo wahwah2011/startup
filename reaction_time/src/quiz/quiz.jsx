@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { flashcards } from '../data/flashcards';
 import './quiz.css';
 
@@ -7,6 +7,27 @@ export function Quiz({ userName }) {
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState(null);
   const [deckComplete, setDeckComplete] = useState(false);
+  const [score, setScore] = useState(0);
+  const [cardsMastered, setCardsMastered] = useState(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('quizProgress');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.userName === userName) {
+        setScore(data.score || 0);
+        setCardsMastered(data.cardsMastered || 0);
+      }
+    }
+  }, [userName]);
+
+  useEffect(() => {
+    localStorage.setItem('quizProgress', JSON.stringify({
+      userName,
+      score,
+      cardsMastered,
+    }));
+  }, [score, cardsMastered, userName]);
 
   const currentCard = deckComplete ? null : flashcards[currentCardIndex];
 
@@ -17,6 +38,8 @@ export function Quiz({ userName }) {
     const correct = userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
 
     if (correct) {
+      setScore((s) => s + 1);
+      setCardsMastered((c) => c + 1);
       setFeedback('correct');
       setTimeout(() => {
         const nextIndex = currentCardIndex + 1;
@@ -119,13 +142,13 @@ export function Quiz({ userName }) {
                   <div className="col-6">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Your Score</p>
-                      <p className="score-value" id="user-score">0</p>
+                      <p className="score-value">{score}</p>
                     </div>
                   </div>
                   <div className="col-6">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Cards Mastered</p>
-                      <p className="score-value" id="cards-mastered">0</p>
+                      <p className="score-value">{cardsMastered}</p>
                     </div>
                   </div>
                 </div>
@@ -151,7 +174,7 @@ export function Quiz({ userName }) {
               </li>
               <li className="list-group-item d-flex justify-content-between active-user">
                 <span>3. {userName}</span>
-                <span className="badge bg-success">0</span>
+                <span className="badge bg-success">{score}</span>
               </li>
             </ul>
           </aside>
