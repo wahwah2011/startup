@@ -2,56 +2,93 @@
 import { flashcards } from '../data/flashcards';
 import './quiz.css';
 
+function findNextUnmastered(masteredIds, startIndex) {
+  for (let i = 0; i < flashcards.length; i++) {
+    const idx = (startIndex + i) % flashcards.length;
+    if (!masteredIds.includes(flashcards[idx].id)) {
+      return idx;
+    }
+  }
+  return -1;
+}
+
 export function Quiz({ userName }) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState(null);
-  const [deckComplete, setDeckComplete] = useState(false);
   const [score, setScore] = useState(0);
   const [cardsMastered, setCardsMastered] = useState(0);
+  const [masteredIds, setMasteredIds] = useState([]);
+  const [missedIds, setMissedIds] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('quizProgress');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
+        const restoredMastered = data.masteredIds || [];
         setScore(data.score || 0);
         setCardsMastered(data.cardsMastered || 0);
+        setMasteredIds(restoredMastered);
+        setMissedIds(data.missedIds || []);
+        const resumeIndex = findNextUnmastered(restoredMastered, data.currentCardIndex || 0);
+        if (resumeIndex >= 0) {
+          setCurrentCardIndex(resumeIndex);
+        }
       }
     }
+    setLoaded(true);
   }, [userName]);
 
   useEffect(() => {
+    if (!loaded) return;
     localStorage.setItem('quizProgress', JSON.stringify({
       userName,
       score,
       cardsMastered,
+      masteredIds,
+      missedIds,
+      currentCardIndex,
     }));
-  }, [score, cardsMastered, userName]);
+  }, [score, cardsMastered, masteredIds, missedIds, currentCardIndex, userName, loaded]);
 
-  const currentCard = deckComplete ? null : flashcards[currentCardIndex];
+  const allMastered = masteredIds.length >= flashcards.length;
+  const currentCard = allMastered ? null : flashcards[currentCardIndex];
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (deckComplete || !userAnswer.trim()) return;
+    if (allMastered || !userAnswer.trim()) return;
 
     const correct = userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
 
     if (correct) {
       setScore((s) => s + 1);
-      setCardsMastered((c) => c + 1);
+      const newMastered = masteredIds.includes(currentCard.id)
+        ? masteredIds
+        : [...masteredIds, currentCard.id];
+
+      if (!masteredIds.includes(currentCard.id)) {
+        setCardsMastered((c) => c + 1);
+        setMasteredIds(newMastered);
+      }
+      setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
       setFeedback('correct');
+
       setTimeout(() => {
-        const nextIndex = currentCardIndex + 1;
-        if (nextIndex >= flashcards.length) {
-          setDeckComplete(true);
+        const nextIdx = findNextUnmastered(newMastered, currentCardIndex + 1);
+        if (nextIdx < 0) {
+          setCurrentCardIndex(0);
         } else {
-          setCurrentCardIndex(nextIndex);
+          setCurrentCardIndex(nextIdx);
         }
         setUserAnswer('');
         setFeedback(null);
       }, 1000);
     } else {
+      if (!missedIds.includes(currentCard.id)) {
+        setMissedIds((prev) => [...prev, currentCard.id]);
+      }
       setFeedback('incorrect');
       setTimeout(() => setFeedback(null), 1500);
     }
@@ -61,7 +98,10 @@ export function Quiz({ userName }) {
     setCurrentCardIndex(0);
     setUserAnswer('');
     setFeedback(null);
-    setDeckComplete(false);
+    setScore(0);
+    setCardsMastered(0);
+    setMasteredIds([]);
+    setMissedIds([]);
   }
 
   function getInputClass() {
@@ -70,6 +110,8 @@ export function Quiz({ userName }) {
     if (feedback === 'incorrect') cls += ' is-invalid';
     return cls;
   }
+
+  const needsReview = missedIds.filter((id) => !masteredIds.includes(id)).length;
 
   return (
     <main className="container-fluid">
@@ -80,19 +122,21 @@ export function Quiz({ userName }) {
             <div className="card-body">
               Chemist:{' '}
               <span className="player-name fw-bold text-light">{userName}</span>
-              <span className="ms-3 text-muted">
-                Card {Math.min(currentCardIndex + 1, flashcards.length)} of {flashcards.length}
-              </span>
+              {!allMastered && (
+                <span className="ms-3 text-muted">
+                  Card {currentCardIndex + 1} of {flashcards.length}
+                </span>
+              )}
             </div>
           </div>
 
           <section id="quiz-container" className="card">
             <div className="card-body">
               <div className="quiz-layout">
-                {deckComplete ? (
+                {allMastered ? (
                   <div className="text-center py-4">
-                    <h3 className="text-light mb-3">Deck Complete!</h3>
-                    <p className="text-muted">You've gone through all {flashcards.length} cards.</p>
+                    <h3 className="text-light mb-3">All Cards Mastered!</h3>
+                    <p className="text-muted">You've mastered all {flashcards.length} compounds.</p>
                     <button className="btn btn-primary" onClick={handleRestart}>
                       Restart Deck
                     </button>
@@ -139,16 +183,22 @@ export function Quiz({ userName }) {
                 )}
 
                 <div id="score-display" className="row mt-4">
-                  <div className="col-6">
+                  <div className="col-4">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Your Score</p>
                       <p className="score-value">{score}</p>
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-4">
                     <div className="score-card text-center">
-                      <p className="score-label mb-1">Cards Mastered</p>
+                      <p className="score-label mb-1">Mastered</p>
                       <p className="score-value">{cardsMastered}</p>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="score-card text-center">
+                      <p className="score-label mb-1">Needs Review</p>
+                      <p className="score-value" style={{color: needsReview > 0 ? '#e74c3c' : undefined}}>{needsReview}</p>
                     </div>
                   </div>
                 </div>
