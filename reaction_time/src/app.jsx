@@ -51,16 +51,20 @@ export default function App() {
                       Home
                     </NavLink>
                   </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/quiz">
-                      Quiz
-                    </NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/leaderboard">
-                      Leaderboard
-                    </NavLink>
-                  </li>
+                  {userName && (
+                    <>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/quiz">
+                          Quiz
+                        </NavLink>
+                      </li>
+                      <li className="nav-item">
+                        <NavLink className="nav-link" to="/leaderboard">
+                          Leaderboard
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
                   <li className="nav-item">
                     <NavLink className="nav-link" to="/about">
                       About
@@ -96,7 +100,7 @@ export default function App() {
           />
           <Route
             path="/leaderboard"
-            element={<Leaderboard userName={userName} />}
+            element={userName ? <Leaderboard userName={userName} /> : <Navigate to="/" replace />}
           />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
