@@ -1,7 +1,40 @@
-﻿import React from "react";
+﻿import React, { useState, useEffect } from "react";
 import "./leaderboard.css";
 
+const MOCK_PLAYERS = [
+  { name: "Lavoisier", score: 2 },
+  { name: "Curie", score: 15 },
+  { name: "Dalton", score: 10 },
+  { name: "Mendeleev", score: 7 },
+  { name: "Pasteur", score: 16 },
+];
+
+const RANK_CLASSES = ["rank-gold", "rank-silver", "rank-bronze"];
+
 export function Leaderboard({ userName }) {
+  const [players, setPlayers] = useState([]);
+
+  useEffect(() => {
+    let userScore = 0;
+    const saved = localStorage.getItem("quizProgress");
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.userName === userName) {
+        userScore = data.score || 0;
+      }
+    }
+
+    const combined = [
+      ...MOCK_PLAYERS,
+      { name: userName || "You", score: userScore, isUser: true },
+    ];
+    combined.sort((a, b) => b.score - a.score);
+    setPlayers(combined);
+  }, [userName]);
+
+  const userEntry = players.find((p) => p.isUser);
+  const userRank = userEntry ? players.indexOf(userEntry) + 1 : "-";
+
   return (
     <main className="container">
       <div className="row justify-content-center">
@@ -31,21 +64,15 @@ export function Leaderboard({ userName }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="rank-gold">
-                  <td>1</td>
-                  <td>Lavosier</td>
-                  <td>34</td>
-                </tr>
-                <tr className="rank-silver">
-                  <td>2</td>
-                  <td>Curie</td>
-                  <td>29</td>
-                </tr>
-                <tr className="rank-bronze">
-                  <td>3</td>
-                  <td>{userName || "You"}</td>
-                  <td>0</td>
-                </tr>
+                {players.map((player, index) => (
+                  <tr key={player.name} className={RANK_CLASSES[index] || ""}>
+                    <td>{index + 1}</td>
+                    <td>
+                      {player.isUser ? player.name + " (You)" : player.name}
+                    </td>
+                    <td>{player.score}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -60,14 +87,12 @@ export function Leaderboard({ userName }) {
               <div className="row text-center">
                 <div className="col-6">
                   <p className="stat-label">Your Rank</p>
-                  <p className="stat-value" id="user-rank">
-                    3
-                  </p>
+                  <p className="stat-value">{userRank}</p>
                 </div>
                 <div className="col-6">
                   <p className="stat-label">Cards Mastered</p>
-                  <p className="stat-value" id="total-cards">
-                    0
+                  <p className="stat-value">
+                    {userEntry ? userEntry.score : 0}
                   </p>
                 </div>
               </div>
