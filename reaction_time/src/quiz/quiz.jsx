@@ -1,5 +1,5 @@
-import React from 'react';
-import './quiz.css';
+import React from "react";
+import "./quiz.css";
 
 export function Quiz() {
   return (
@@ -10,7 +10,7 @@ export function Quiz() {
           {/* DATABASE: Current user info from database */}
           <div className="players card info-card mb-3">
             <div className="card-body">
-              Chemist:{' '}
+              Chemist:{" "}
               <span className="player-name fw-bold text-light">Pasteur</span>
             </div>
           </div>
@@ -22,7 +22,7 @@ export function Quiz() {
                 <div className="structure-container text-center">
                   <img
                     id="lewis-structure"
-                    src="/Methane.png"
+                    src="/images/acetic_acid.png"
                     alt="Lewis Structure"
                     className="lewis-image"
                   />
@@ -30,7 +30,10 @@ export function Quiz() {
 
                 <div id="answer-section" className="mt-4">
                   <div className="input-group">
-                    <label htmlFor="compound-input" className="input-group-text">
+                    <label
+                      htmlFor="compound-input"
+                      className="input-group-text"
+                    >
                       Compound Name:
                     </label>
                     <input
@@ -51,13 +54,17 @@ export function Quiz() {
                   <div className="col-6">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Your Score</p>
-                      <p className="score-value" id="user-score">0</p>
+                      <p className="score-value" id="user-score">
+                        0
+                      </p>
                     </div>
                   </div>
                   <div className="col-6">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Cards Mastered</p>
-                      <p className="score-value" id="cards-mastered">0</p>
+                      <p className="score-value" id="cards-mastered">
+                        0
+                      </p>
                     </div>
                   </div>
                 </div>

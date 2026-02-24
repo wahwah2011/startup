@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
 
 import { Login } from "./login/login";
@@ -7,6 +7,26 @@ import { Leaderboard } from "./leaderboard/leaderboard";
 import { About } from "./about/about";
 
 export default function App() {
+  const [userName, setUserName] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("userName");
+    if (stored) {
+      setUserName(stored);
+    }
+  }, []);
+
+  function handleLogin(name) {
+    console.log("handleLogin", name);
+    localStorage.setItem("userName", name);
+    setUserName(name);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("userName");
+    setUserName(null);
+  }
+
   return (
     <BrowserRouter>
       <div className="d-flex flex-column flex-grow-1">
@@ -26,7 +46,7 @@ export default function App() {
                 <span className="navbar-toggler-icon"></span>
               </button>
               <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav ms-auto">
+                <ul className="navbar-nav me-auto">
                   <li className="nav-item">
                     <NavLink className="nav-link" to="/">
                       Home
@@ -48,6 +68,11 @@ export default function App() {
                     </NavLink>
                   </li>
                 </ul>
+                {userName && (
+                  <span className="navbar-text text-light">
+                    Welcome, <strong>{userName}</strong>
+                  </span>
+                )}
               </div>
             </div>
           </nav>
@@ -55,9 +80,22 @@ export default function App() {
 
         {/* Page Routes */}
         <Routes>
-          <Route path="/" element={<Login />} exact />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route
+            path="/"
+            element={
+              <Login
+                userName={userName}
+                onLogin={handleLogin}
+                onLogout={handleLogout}
+              />
+            }
+            exact
+          />
+          <Route path="/quiz" element={<Quiz userName={userName} />} />
+          <Route
+            path="/leaderboard"
+            element={<Leaderboard userName={userName} />}
+          />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
