@@ -1,11 +1,24 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 
 export function Login({ userName, onLogin, onLogout }) {
   const [nameInput, setNameInput] = useState("");
   const [password, setPassword] = useState("");
+  const [onlineCount, setOnlineCount] = useState(3);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnlineCount((prev) => {
+        const delta = Math.random() < 0.5 ? 1 : -1;
+        const next = prev + delta;
+        return Math.max(1, Math.min(next, 12));
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -88,11 +101,11 @@ export function Login({ userName, onLogin, onLogout }) {
             </div>
           </div>
 
-          {/* WEBSOCKET: Real-time active users count */}
           <div id="active-users" className="card info-card mt-3">
             <div className="card-body text-center">
               <p className="mb-0">
-                Chemists online: <span className="badge bg-success">5</span>
+                Chemists online:{" "}
+                <span className="badge bg-success">{onlineCount}</span>
               </p>
             </div>
           </div>

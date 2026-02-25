@@ -1,6 +1,6 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
-import { flashcards } from '../data/flashcards';
-import './quiz.css';
+﻿import React, { useState, useEffect, useRef } from "react";
+import { flashcards } from "../data/flashcards";
+import "./quiz.css";
 
 function findNextUnmastered(masteredIds, startIndex) {
   for (let i = 0; i < flashcards.length; i++) {
@@ -14,7 +14,7 @@ function findNextUnmastered(masteredIds, startIndex) {
 
 export function Quiz({ userName, players, onScoreUpdate }) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [userAnswer, setUserAnswer] = useState('');
+  const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState(null);
   const [score, setScore] = useState(0);
   const [cardsMastered, setCardsMastered] = useState(0);
@@ -34,7 +34,7 @@ export function Quiz({ userName, players, onScoreUpdate }) {
       if (p.isUser) continue;
       const old = prev.find((o) => o.name === p.name);
       if (old && p.score > old.score) {
-        setNotification(p.name + ' just mastered a card!');
+        setNotification(p.name + " just mastered a card!");
         setTimeout(() => setNotification(null), 2500);
         break;
       }
@@ -42,7 +42,7 @@ export function Quiz({ userName, players, onScoreUpdate }) {
   }, [players]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('quizProgress');
+    const saved = localStorage.getItem("quizProgress");
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
@@ -53,7 +53,10 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         setMasteredIds(restoredMastered);
         setMissedIds(data.missedIds || []);
         onScoreUpdate(restoredScore);
-        const resumeIndex = findNextUnmastered(restoredMastered, data.currentCardIndex || 0);
+        const resumeIndex = findNextUnmastered(
+          restoredMastered,
+          data.currentCardIndex || 0,
+        );
         if (resumeIndex >= 0) {
           setCurrentCardIndex(resumeIndex);
         }
@@ -64,15 +67,26 @@ export function Quiz({ userName, players, onScoreUpdate }) {
 
   useEffect(() => {
     if (!loaded) return;
-    localStorage.setItem('quizProgress', JSON.stringify({
-      userName,
-      score,
-      cardsMastered,
-      masteredIds,
-      missedIds,
-      currentCardIndex,
-    }));
-  }, [score, cardsMastered, masteredIds, missedIds, currentCardIndex, userName, loaded]);
+    localStorage.setItem(
+      "quizProgress",
+      JSON.stringify({
+        userName,
+        score,
+        cardsMastered,
+        masteredIds,
+        missedIds,
+        currentCardIndex,
+      }),
+    );
+  }, [
+    score,
+    cardsMastered,
+    masteredIds,
+    missedIds,
+    currentCardIndex,
+    userName,
+    loaded,
+  ]);
 
   const allMastered = masteredIds.length >= flashcards.length;
   const currentCard = allMastered ? null : flashcards[currentCardIndex];
@@ -82,7 +96,8 @@ export function Quiz({ userName, players, onScoreUpdate }) {
     e.preventDefault();
     if (allMastered || !userAnswer.trim()) return;
 
-    const correct = userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
+    const correct =
+      userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
 
     if (correct) {
       const newScore = score + 1;
@@ -97,7 +112,7 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         setMasteredIds(newMastered);
       }
       setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
-      setFeedback('correct');
+      setFeedback("correct");
 
       setTimeout(() => {
         const nextIdx = findNextUnmastered(newMastered, currentCardIndex + 1);
@@ -106,21 +121,21 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         } else {
           setCurrentCardIndex(nextIdx);
         }
-        setUserAnswer('');
+        setUserAnswer("");
         setFeedback(null);
       }, 1000);
     } else {
       if (!missedIds.includes(currentCard.id)) {
         setMissedIds((prev) => [...prev, currentCard.id]);
       }
-      setFeedback('incorrect');
+      setFeedback("incorrect");
       setTimeout(() => setFeedback(null), 1500);
     }
   }
 
   function handleRestart() {
     setCurrentCardIndex(0);
-    setUserAnswer('');
+    setUserAnswer("");
     setFeedback(null);
     setScore(0);
     setCardsMastered(0);
@@ -130,13 +145,15 @@ export function Quiz({ userName, players, onScoreUpdate }) {
   }
 
   function getInputClass() {
-    let cls = 'form-control';
-    if (feedback === 'correct') cls += ' is-valid';
-    if (feedback === 'incorrect') cls += ' is-invalid';
+    let cls = "form-control";
+    if (feedback === "correct") cls += " is-valid";
+    if (feedback === "incorrect") cls += " is-invalid";
     return cls;
   }
 
-  const needsReview = missedIds.filter((id) => !masteredIds.includes(id)).length;
+  const needsReview = missedIds.filter(
+    (id) => !masteredIds.includes(id),
+  ).length;
 
   return (
     <main className="container-fluid">
@@ -145,7 +162,7 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         <div className="col-12 col-lg-8">
           <div className="players card info-card mb-3">
             <div className="card-body">
-              Chemist:{' '}
+              Chemist:{" "}
               <span className="player-name fw-bold text-light">{userName}</span>
               {!allMastered && (
                 <span className="ms-3 text-muted">
@@ -161,7 +178,9 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                 {allMastered ? (
                   <div className="text-center py-4">
                     <h3 className="text-light mb-3">All Cards Mastered!</h3>
-                    <p className="text-muted">You've mastered all {flashcards.length} compounds.</p>
+                    <p className="text-muted">
+                      You've mastered all {flashcards.length} compounds.
+                    </p>
                     <button className="btn btn-primary" onClick={handleRestart}>
                       Restart Deck
                     </button>
@@ -180,7 +199,10 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                     <form onSubmit={handleSubmit}>
                       <div id="answer-section" className="mt-4">
                         <div className="input-group">
-                          <label htmlFor="compound-input" className="input-group-text">
+                          <label
+                            htmlFor="compound-input"
+                            className="input-group-text"
+                          >
                             Compound Name:
                           </label>
                           <input
@@ -190,17 +212,25 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                             placeholder="Enter compound name"
                             value={userAnswer}
                             onChange={(e) => setUserAnswer(e.target.value)}
-                            disabled={feedback === 'correct'}
+                            disabled={feedback === "correct"}
                           />
-                          <button type="submit" className="btn btn-primary" disabled={feedback === 'correct'}>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={feedback === "correct"}
+                          >
                             Submit
                           </button>
                         </div>
-                        {feedback === 'incorrect' && (
-                          <div className="text-danger mt-2 text-center fw-bold">Try again!</div>
+                        {feedback === "incorrect" && (
+                          <div className="text-danger mt-2 text-center fw-bold">
+                            Try again!
+                          </div>
                         )}
-                        {feedback === 'correct' && (
-                          <div className="text-success mt-2 text-center fw-bold">Correct!</div>
+                        {feedback === "correct" && (
+                          <div className="text-success mt-2 text-center fw-bold">
+                            Correct!
+                          </div>
                         )}
                       </div>
                     </form>
@@ -223,7 +253,14 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                   <div className="col-4">
                     <div className="score-card text-center">
                       <p className="score-label mb-1">Needs Review</p>
-                      <p className="score-value" style={{color: needsReview > 0 ? '#e74c3c' : undefined}}>{needsReview}</p>
+                      <p
+                        className="score-value"
+                        style={{
+                          color: needsReview > 0 ? "#e74c3c" : undefined,
+                        }}
+                      >
+                        {needsReview}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -243,17 +280,31 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                 {miniBoard.map((player, index) => (
                   <li
                     key={player.name}
-                    className={'list-group-item d-flex justify-content-between' + (player.isUser ? ' active-user' : '')}
+                    className={
+                      "list-group-item d-flex justify-content-between" +
+                      (player.isUser ? " active-user" : "")
+                    }
                   >
-                    <span>{index + 1}. {player.isUser ? userName : player.name}</span>
-                    <span className={'badge ' + (player.isUser ? 'bg-success' : 'bg-primary')}>{player.score}</span>
+                    <span>
+                      {index + 1}. {player.isUser ? userName : player.name}
+                    </span>
+                    <span
+                      className={
+                        "badge " + (player.isUser ? "bg-success" : "bg-primary")
+                      }
+                    >
+                      {player.score}
+                    </span>
                   </li>
                 ))}
               </ul>
             </aside>
 
             {notification && (
-              <div className="sidebar-notification alert alert-info text-center py-2 mb-0" role="alert">
+              <div
+                className="sidebar-notification alert alert-info text-center py-2 mb-0"
+                role="alert"
+              >
                 {notification}
               </div>
             )}
@@ -263,4 +314,3 @@ export function Quiz({ userName, players, onScoreUpdate }) {
     </main>
   );
 }
-

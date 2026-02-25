@@ -1,5 +1,11 @@
 ﻿import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, NavLink, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  Navigate,
+} from "react-router-dom";
 
 import { Login } from "./login/login";
 import { Quiz } from "./quiz/quiz";
@@ -21,7 +27,7 @@ export default function App() {
   useEffect(() => {
     if (!userName) return;
     let userScore = 0;
-    const saved = localStorage.getItem('quizProgress');
+    const saved = localStorage.getItem("quizProgress");
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
@@ -39,7 +45,8 @@ export default function App() {
         const nonUserPlayers = updated.filter((p) => !p.isUser);
         if (nonUserPlayers.length === 0) return prev;
 
-        const target = nonUserPlayers[Math.floor(Math.random() * nonUserPlayers.length)];
+        const target =
+          nonUserPlayers[Math.floor(Math.random() * nonUserPlayers.length)];
         target.score += 1;
 
         updated.sort((a, b) => b.score - a.score);
@@ -64,7 +71,7 @@ export default function App() {
   function handleScoreUpdate(newScore) {
     setPlayers((prev) => {
       const updated = prev.map((p) =>
-        p.isUser ? { ...p, score: newScore } : { ...p }
+        p.isUser ? { ...p, score: newScore } : { ...p },
       );
       updated.sort((a, b) => b.score - a.score);
       return updated;
@@ -142,17 +149,25 @@ export default function App() {
           <Route
             path="/quiz"
             element={
-              userName
-                ? <Quiz userName={userName} players={players} onScoreUpdate={handleScoreUpdate} />
-                : <Navigate to="/" replace />
+              userName ? (
+                <Quiz
+                  userName={userName}
+                  players={players}
+                  onScoreUpdate={handleScoreUpdate}
+                />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
           <Route
             path="/leaderboard"
             element={
-              userName
-                ? <Leaderboard userName={userName} players={players} />
-                : <Navigate to="/" replace />
+              userName ? (
+                <Leaderboard userName={userName} players={players} />
+              ) : (
+                <Navigate to="/" replace />
+              )
             }
           />
           <Route path="/about" element={<About />} />

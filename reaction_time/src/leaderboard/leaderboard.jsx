@@ -1,10 +1,10 @@
-﻿import React from 'react';
-import { RANK_CLASSES } from '../data/players';
-import './leaderboard.css';
+﻿import React from "react";
+import { RANK_CLASSES } from "../data/players";
+import "./leaderboard.css";
 
 export function Leaderboard({ userName, players }) {
   const userEntry = players.find((p) => p.isUser);
-  const userRank = userEntry ? players.indexOf(userEntry) + 1 : '-';
+  const userRank = userEntry ? players.indexOf(userEntry) + 1 : "-";
 
   return (
     <main className="container">
@@ -15,7 +15,10 @@ export function Leaderboard({ userName, players }) {
           <div id="connection-status" className="card info-card mb-3">
             <div className="card-body d-flex align-items-center justify-content-center gap-2">
               <span className="status-indicator"></span>
-              <p className="mb-0">Live Updates: <span className="badge bg-success">Connected</span></p>
+              <p className="mb-0">
+                Live Updates:{" "}
+                <span className="badge bg-success">Connected</span>
+              </p>
             </div>
           </div>
 
@@ -30,9 +33,11 @@ export function Leaderboard({ userName, players }) {
               </thead>
               <tbody>
                 {players.map((player, index) => (
-                  <tr key={player.name} className={RANK_CLASSES[index] || ''}>
+                  <tr key={player.name} className={RANK_CLASSES[index] || ""}>
                     <td>{index + 1}</td>
-                    <td>{player.isUser ? player.name + ' (You)' : player.name}</td>
+                    <td>
+                      {player.isUser ? player.name + " (You)" : player.name}
+                    </td>
                     <td>{player.score}</td>
                   </tr>
                 ))}
@@ -42,7 +47,9 @@ export function Leaderboard({ userName, players }) {
 
           <section id="user-stats" className="card mt-4">
             <div className="card-header">
-              <h3 className="mb-0 text-center fw-bold">{userName ? userName + "'s Stats" : "Your Stats"}</h3>
+              <h3 className="mb-0 text-center fw-bold">
+                {userName ? userName + "'s Stats" : "Your Stats"}
+              </h3>
             </div>
             <div className="card-body">
               <div className="row text-center">
@@ -52,7 +59,9 @@ export function Leaderboard({ userName, players }) {
                 </div>
                 <div className="col-6">
                   <p className="stat-label">Cards Mastered</p>
-                  <p className="stat-value">{userEntry ? userEntry.score : 0}</p>
+                  <p className="stat-value">
+                    {userEntry ? userEntry.score : 0}
+                  </p>
                 </div>
               </div>
             </div>
