@@ -4,18 +4,43 @@ import './leaderboard.css';
 
 export function Leaderboard({ userName }) {
   const [players, setPlayers] = useState([]);
+  const [notification, setNotification] = useState(null);
 
-  useEffect(() => {
-    let userScore = 0;
+  function getUserScore() {
     const saved = localStorage.getItem('quizProgress');
     if (saved) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
-        userScore = data.score || 0;
+        return data.score || 0;
       }
     }
-    setPlayers(buildLeaderboard(userName, userScore, MOCK_PLAYERS));
+    return 0;
+  }
+
+  useEffect(() => {
+    setPlayers(buildLeaderboard(userName, getUserScore(), MOCK_PLAYERS));
   }, [userName]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlayers((prev) => {
+        const updated = prev.map((p) => ({ ...p }));
+        const nonUserPlayers = updated.filter((p) => !p.isUser);
+        if (nonUserPlayers.length === 0) return prev;
+
+        const target = nonUserPlayers[Math.floor(Math.random() * nonUserPlayers.length)];
+        target.score += 1;
+
+        setNotification(target.name + ' just mastered a card!');
+        setTimeout(() => setNotification(null), 2500);
+
+        updated.sort((a, b) => b.score - a.score);
+        return updated;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const userEntry = players.find((p) => p.isUser);
   const userRank = userEntry ? players.indexOf(userEntry) + 1 : '-';
@@ -26,13 +51,18 @@ export function Leaderboard({ userName }) {
         <div className="col-12">
           <h2 className="page-title text-center mb-4">Leaderboard</h2>
 
-          {/* WEBSOCKET: Real-time connection status */}
           <div id="connection-status" className="card info-card mb-3">
             <div className="card-body d-flex align-items-center justify-content-center gap-2">
               <span className="status-indicator"></span>
-              <p className="mb-0">Live Updates: <span id="ws-status" className="badge bg-success">Connected</span></p>
+              <p className="mb-0">Live Updates: <span className="badge bg-success">Connected</span></p>
             </div>
           </div>
+
+          {notification && (
+            <div className="alert alert-info text-center py-2 mb-3" role="alert">
+              {notification}
+            </div>
+          )}
 
           <div className="table-responsive">
             <table className="table table-dark table-striped table-hover">
