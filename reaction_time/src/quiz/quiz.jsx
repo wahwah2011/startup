@@ -1,6 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { flashcards } from '../data/flashcards';
-import { MOCK_PLAYERS, buildLeaderboard } from '../data/players';
 import './quiz.css';
 
 function findNextUnmastered(masteredIds, startIndex) {
@@ -13,7 +12,7 @@ function findNextUnmastered(masteredIds, startIndex) {
   return -1;
 }
 
-export function Quiz({ userName }) {
+export function Quiz({ userName, players, onScoreUpdate }) {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
   const [feedback, setFeedback] = useState(null);
@@ -22,7 +21,25 @@ export function Quiz({ userName }) {
   const [masteredIds, setMasteredIds] = useState([]);
   const [missedIds, setMissedIds] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [miniBoard, setMiniBoard] = useState([]);
+  const [notification, setNotification] = useState(null);
+  const prevPlayersRef = useRef(players);
+
+  useEffect(() => {
+    const prev = prevPlayersRef.current;
+    prevPlayersRef.current = players;
+
+    if (prev.length === 0) return;
+    for (let i = 0; i < players.length; i++) {
+      const p = players[i];
+      if (p.isUser) continue;
+      const old = prev.find((o) => o.name === p.name);
+      if (old && p.score > old.score) {
+        setNotification(p.name + ' just mastered a card!');
+        setTimeout(() => setNotification(null), 2500);
+        break;
+      }
+    }
+  }, [players]);
 
   useEffect(() => {
     const saved = localStorage.getItem('quizProgress');
@@ -30,10 +47,12 @@ export function Quiz({ userName }) {
       const data = JSON.parse(saved);
       if (data.userName === userName) {
         const restoredMastered = data.masteredIds || [];
-        setScore(data.score || 0);
+        const restoredScore = data.score || 0;
+        setScore(restoredScore);
         setCardsMastered(data.cardsMastered || 0);
         setMasteredIds(restoredMastered);
         setMissedIds(data.missedIds || []);
+        onScoreUpdate(restoredScore);
         const resumeIndex = findNextUnmastered(restoredMastered, data.currentCardIndex || 0);
         if (resumeIndex >= 0) {
           setCurrentCardIndex(resumeIndex);
@@ -53,11 +72,11 @@ export function Quiz({ userName }) {
       missedIds,
       currentCardIndex,
     }));
-    setMiniBoard(buildLeaderboard(userName, score, MOCK_PLAYERS).slice(0, 3));
   }, [score, cardsMastered, masteredIds, missedIds, currentCardIndex, userName, loaded]);
 
   const allMastered = masteredIds.length >= flashcards.length;
   const currentCard = allMastered ? null : flashcards[currentCardIndex];
+  const miniBoard = players.slice(0, 3);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -66,7 +85,9 @@ export function Quiz({ userName }) {
     const correct = userAnswer.trim().toLowerCase() === currentCard.name.toLowerCase();
 
     if (correct) {
-      setScore((s) => s + 1);
+      const newScore = score + 1;
+      setScore(newScore);
+      onScoreUpdate(newScore);
       const newMastered = masteredIds.includes(currentCard.id)
         ? masteredIds
         : [...masteredIds, currentCard.id];
@@ -105,6 +126,7 @@ export function Quiz({ userName }) {
     setCardsMastered(0);
     setMasteredIds([]);
     setMissedIds([]);
+    onScoreUpdate(0);
   }
 
   function getInputClass() {
@@ -212,24 +234,33 @@ export function Quiz({ userName }) {
 
         {/* Mini Leaderboard Sidebar */}
         <div className="col-12 col-lg-3 mt-3 mt-lg-0">
-          <aside id="mini-leaderboard" className="card">
-            <div className="card-header">
-              <h3 className="mb-0">Top Chemists</h3>
-            </div>
-            <ul className="list-group list-group-flush">
-              {miniBoard.map((player, index) => (
-                <li
-                  key={player.name}
-                  className={'list-group-item d-flex justify-content-between' + (player.isUser ? ' active-user' : '')}
-                >
-                  <span>{index + 1}. {player.isUser ? userName : player.name}</span>
-                  <span className={'badge ' + (player.isUser ? 'bg-success' : 'bg-primary')}>{player.score}</span>
-                </li>
-              ))}
-            </ul>
-          </aside>
+          <div className="sidebar-wrapper">
+            <aside id="mini-leaderboard" className="card">
+              <div className="card-header">
+                <h3 className="mb-0">Top Chemists</h3>
+              </div>
+              <ul className="list-group list-group-flush">
+                {miniBoard.map((player, index) => (
+                  <li
+                    key={player.name}
+                    className={'list-group-item d-flex justify-content-between' + (player.isUser ? ' active-user' : '')}
+                  >
+                    <span>{index + 1}. {player.isUser ? userName : player.name}</span>
+                    <span className={'badge ' + (player.isUser ? 'bg-success' : 'bg-primary')}>{player.score}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+
+            {notification && (
+              <div className="sidebar-notification alert alert-info text-center py-2 mb-0" role="alert">
+                {notification}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </main>
   );
 }
+

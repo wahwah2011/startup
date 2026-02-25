@@ -1,4 +1,4 @@
-/* ===== Quiz Page Styles ===== */
+﻿/* ===== Quiz Page Styles ===== */
 #quiz-container {
   background-color: var(--card-bg);
 }
@@ -75,6 +75,20 @@
 #mini-leaderboard .active-user {
   background-color: rgba(39, 174, 96, 0.2);
   border-left: 3px solid var(--accent-color);
+}
+
+/* ===== Sidebar Notification ===== */
+.sidebar-wrapper {
+  position: relative;
+}
+
+.sidebar-notification {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.75rem;
+  z-index: 10;
 }
 
 /* ===== Quiz Responsive ===== */

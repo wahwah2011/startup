@@ -5,9 +5,11 @@ import { Login } from "./login/login";
 import { Quiz } from "./quiz/quiz";
 import { Leaderboard } from "./leaderboard/leaderboard";
 import { About } from "./about/about";
+import { MOCK_PLAYERS, buildLeaderboard } from "./data/players";
 
 export default function App() {
   const [userName, setUserName] = useState(null);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("userName");
@@ -15,6 +17,38 @@ export default function App() {
       setUserName(stored);
     }
   }, []);
+
+  useEffect(() => {
+    if (!userName) return;
+    let userScore = 0;
+    const saved = localStorage.getItem('quizProgress');
+    if (saved) {
+      const data = JSON.parse(saved);
+      if (data.userName === userName) {
+        userScore = data.score || 0;
+      }
+    }
+    setPlayers(buildLeaderboard(userName, userScore, MOCK_PLAYERS));
+  }, [userName]);
+
+  useEffect(() => {
+    if (!userName) return;
+    const interval = setInterval(() => {
+      setPlayers((prev) => {
+        const updated = prev.map((p) => ({ ...p }));
+        const nonUserPlayers = updated.filter((p) => !p.isUser);
+        if (nonUserPlayers.length === 0) return prev;
+
+        const target = nonUserPlayers[Math.floor(Math.random() * nonUserPlayers.length)];
+        target.score += 1;
+
+        updated.sort((a, b) => b.score - a.score);
+        return updated;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [userName]);
 
   function handleLogin(name) {
     localStorage.setItem("userName", name);
@@ -24,6 +58,17 @@ export default function App() {
   function handleLogout() {
     localStorage.removeItem("userName");
     setUserName(null);
+    setPlayers([]);
+  }
+
+  function handleScoreUpdate(newScore) {
+    setPlayers((prev) => {
+      const updated = prev.map((p) =>
+        p.isUser ? { ...p, score: newScore } : { ...p }
+      );
+      updated.sort((a, b) => b.score - a.score);
+      return updated;
+    });
   }
 
   return (
@@ -96,11 +141,19 @@ export default function App() {
           />
           <Route
             path="/quiz"
-            element={userName ? <Quiz userName={userName} /> : <Navigate to="/" replace />}
+            element={
+              userName
+                ? <Quiz userName={userName} players={players} onScoreUpdate={handleScoreUpdate} />
+                : <Navigate to="/" replace />
+            }
           />
           <Route
             path="/leaderboard"
-            element={userName ? <Leaderboard userName={userName} /> : <Navigate to="/" replace />}
+            element={
+              userName
+                ? <Leaderboard userName={userName} players={players} />
+                : <Navigate to="/" replace />
+            }
           />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
