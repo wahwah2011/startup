@@ -164,11 +164,6 @@ export function Quiz({ userName, players, onScoreUpdate }) {
             <div className="card-body">
               Chemist:{" "}
               <span className="player-name fw-bold text-light">{userName}</span>
-              {!allMastered && (
-                <span className="ms-3 text-muted">
-                  Card {currentCardIndex + 1} of {flashcards.length}
-                </span>
-              )}
             </div>
           </div>
 

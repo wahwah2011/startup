@@ -94,7 +94,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **All functionality implemented or mocked out** - Login/logout persisted with localStorage. Quiz cycles through 17 flashcards with answer validation, scoring, mastered/needs-review tracking, and progress saved to localStorage. Leaderboard populated with mock players whose scores increment on a timer to simulate real-time competition. Mock "Chemists online" counter fluctuates on the login page. Live notification banner appears when a mock player masters a card. Protected routes redirect unauthenticated users to login.
+- [x] **All functionality implemented or mocked out** - Login/logout persisted with localStorage. Quiz cycles through flashcards with answer validation, scoring, mastered/needs-review tracking, and progress saved to localStorage. Leaderboard populated with mock players whose scores increment on a timer to simulate real-time competition. Mock "Chemists online" counter fluctuates on the login page. Live notification banner appears when a mock player masters a card. Protected routes redirect unauthenticated users to login.
 - [x] **Hooks** - `useState` manages all component state (user name, quiz progress, form inputs, players, notifications). `useEffect` handles localStorage persistence/restore, mock competitor score intervals, online count simulation, and player change detection. `useRef` tracks the previous players array to detect score changes for notifications.
 
 ## 🚀 Service deliverable

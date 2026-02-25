@@ -1,8 +1,12 @@
 ﻿export const flashcards = [
-  { id: 1, name: "Acetic Acid", image: "/images/acetic_acid.png" },
+  { id: 1, name: "Methane", image: "/images/Methane.png" },
   { id: 2, name: "Acetone", image: "/images/Acetone.png" },
   { id: 3, name: "Acetylene", image: "/images/Acetylene.png" },
-  { id: 4, name: "Acetylsalicylic Acid", image: "/images/Acetylsalicylic_acid.png" },
+  {
+    id: 4,
+    name: "Acetylsalicylic Acid",
+    image: "/images/Acetylsalicylic_acid.png",
+  },
   { id: 5, name: "Adenine", image: "/images/Adenine.png" },
   { id: 6, name: "Benzene", image: "/images/Benzene.png" },
   { id: 7, name: "Butadiene", image: "/images/Butadiene.png" },
@@ -14,6 +18,6 @@
   { id: 13, name: "Glucose", image: "/images/Glucose.png" },
   { id: 14, name: "Isobutane", image: "/images/Isobutane.png" },
   { id: 15, name: "Isoprene", image: "/images/Isoprene.png" },
-  { id: 16, name: "Methane", image: "/images/Methane.png" },
+  { id: 16, name: "Acetic Acid", image: "/images/acetic_acid.png" },
   { id: 17, name: "Propylene", image: "/images/Propylene.png" },
 ];
