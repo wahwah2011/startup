@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { flashcards } from "../data/flashcards";
 import "./quiz.css";
 
@@ -22,6 +22,9 @@ export function Quiz({ userName, players, onScoreUpdate }) {
   const [missedIds, setMissedIds] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [notification, setNotification] = useState(null);
+  const [funFact, setFunFact] = useState(null);
+  const [showFact, setShowFact] = useState(false);
+  const nextCardRef = useRef(null);
   const prevPlayersRef = useRef(players);
 
   useEffect(() => {
@@ -114,16 +117,15 @@ export function Quiz({ userName, players, onScoreUpdate }) {
       setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
       setFeedback("correct");
 
-      setTimeout(() => {
-        const nextIdx = findNextUnmastered(newMastered, currentCardIndex + 1);
-        if (nextIdx < 0) {
-          setCurrentCardIndex(0);
-        } else {
-          setCurrentCardIndex(nextIdx);
-        }
-        setUserAnswer("");
-        setFeedback(null);
-      }, 1000);
+      const nextIdx = findNextUnmastered(newMastered, currentCardIndex + 1);
+      nextCardRef.current = nextIdx < 0 ? 0 : nextIdx;
+
+      fetch("https://uselessfacts.jsph.pl/random.json?language=en")
+        .then((res) => res.json())
+        .then((data) => setFunFact(data.text))
+        .catch(() => setFunFact(null));
+
+      setTimeout(() => setShowFact(true), 800);
     } else {
       if (!missedIds.includes(currentCard.id)) {
         setMissedIds((prev) => [...prev, currentCard.id]);
@@ -131,6 +133,14 @@ export function Quiz({ userName, players, onScoreUpdate }) {
       setFeedback("incorrect");
       setTimeout(() => setFeedback(null), 1500);
     }
+  }
+
+  function handleNextCard() {
+    setCurrentCardIndex(nextCardRef.current);
+    setUserAnswer("");
+    setFeedback(null);
+    setFunFact(null);
+    setShowFact(false);
   }
 
   function handleRestart() {
@@ -141,6 +151,8 @@ export function Quiz({ userName, players, onScoreUpdate }) {
     setCardsMastered(0);
     setMasteredIds([]);
     setMissedIds([]);
+    setFunFact(null);
+    setShowFact(false);
     onScoreUpdate(0);
   }
 
@@ -170,7 +182,22 @@ export function Quiz({ userName, players, onScoreUpdate }) {
           <section id="quiz-container" className="card">
             <div className="card-body">
               <div className="quiz-layout">
-                {allMastered ? (
+                {showFact ? (
+                  <div className="fun-fact-interstitial text-center py-4">
+                    <h4 className="text-success mb-3">Correct!</h4>
+                    {funFact ? (
+                      <>
+                        <p className="fun-fact-label">Did you know?</p>
+                        <p className="fun-fact-text">{funFact}</p>
+                      </>
+                    ) : (
+                      <p className="text-muted">Loading fact...</p>
+                    )}
+                    <button className="btn btn-primary mt-3" onClick={handleNextCard}>
+                      Next Card
+                    </button>
+                  </div>
+                ) : allMastered ? (
                   <div className="text-center py-4">
                     <h3 className="text-light mb-3">All Cards Mastered!</h3>
                     <p className="text-muted">
