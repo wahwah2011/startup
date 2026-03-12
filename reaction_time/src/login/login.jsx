@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
 
@@ -6,6 +6,7 @@ export function Login({ userName, onLogin, onLogout }) {
   const [nameInput, setNameInput] = useState("");
   const [password, setPassword] = useState("");
   const [onlineCount, setOnlineCount] = useState(3);
+  const [errorMsg, setErrorMsg] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,10 +21,48 @@ export function Login({ userName, onLogin, onLogout }) {
     return () => clearInterval(interval);
   }, []);
 
-  function handleSubmit(e) {
+  async function handleLogin(e) {
     e.preventDefault();
-    onLogin(nameInput.trim());
-    navigate("/quiz");
+    setErrorMsg(null);
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: nameInput.trim(),
+        password: password,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      onLogin(data.username);
+      navigate("/quiz");
+    } else {
+      const body = await response.json();
+      setErrorMsg(body.msg || "Login failed");
+    }
+  }
+
+  async function handleCreate(e) {
+    e.preventDefault();
+    setErrorMsg(null);
+    const response = await fetch("/api/auth/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: nameInput.trim(),
+        password: password,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      onLogin(data.username);
+      navigate("/quiz");
+    } else {
+      const body = await response.json();
+      setErrorMsg(body.msg || "Registration failed");
+    }
   }
 
   return (
@@ -56,7 +95,12 @@ export function Login({ userName, onLogin, onLogout }) {
                 <h2 className="card-title text-center mb-4">
                   Welcome, Chemist
                 </h2>
-                <form onSubmit={handleSubmit}>
+                {errorMsg && (
+                  <div className="alert alert-danger text-center py-2">
+                    {errorMsg}
+                  </div>
+                )}
+                <form>
                   <div className="input-group mb-3">
                     <span className="input-group-text">&#x1F9EA;</span>
                     <input
@@ -80,10 +124,20 @@ export function Login({ userName, onLogin, onLogout }) {
                     />
                   </div>
                   <div className="d-flex gap-2 justify-content-center">
-                    <button type="submit" className="btn btn-primary">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleLogin}
+                      disabled={!nameInput.trim() || !password}
+                    >
                       Login
                     </button>
-                    <button type="submit" className="btn btn-outline-secondary">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={handleCreate}
+                      disabled={!nameInput.trim() || !password}
+                    >
                       Create
                     </button>
                   </div>

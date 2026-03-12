@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -62,8 +62,10 @@ export default function App() {
     setUserName(name);
   }
 
-  function handleLogout() {
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "DELETE" });
     localStorage.removeItem("userName");
+    localStorage.removeItem("quizProgress");
     setUserName(null);
     setPlayers([]);
   }
