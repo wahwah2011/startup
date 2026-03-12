@@ -101,12 +101,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Created an Express server in `service/index.js` on port 4000 with JSON body parsing, cookie parsing, and an API router mounted at `/api`.
+- [x] **Static middleware for frontend** - `express.static("public")` serves the Vite-built frontend, with a fallback that serves `index.html` for unknown routes to support SPA routing.
+- [x] **Calls to third party endpoints** - The quiz page fetches a random fun fact from the Useless Facts API (`https://uselessfacts.jsph.pl/random.json`) after each correct answer.
+- [x] **Backend service endpoints** - `GET /api/scores` returns the leaderboard and `POST /api/score` submits/updates a user's score. Both are protected by auth middleware.
+- [x] **Frontend calls service endpoints** - `app.jsx` fetches and polls scores from `GET /api/scores`, submits scores via `POST /api/score`. `login.jsx` calls the auth endpoints with `fetch`.
+- [x] **Supports registration, login, logout, and restricted endpoint** - `POST /api/auth/create` registers a new user, `POST /api/auth/login` authenticates and sets a secure httpOnly cookie, `DELETE /api/auth/logout` clears the token. Score endpoints (`GET /api/scores`, `POST /api/score`) require a valid auth cookie via `verifyAuth` middleware.
+- [x] **Uses BCrypt to hash passwords** - Passwords are hashed with `bcrypt.hash(password, 10)` on registration and verified with `bcrypt.compare` on login using the `bcryptjs` library.
 
 ## 🚀 DB deliverable
 
