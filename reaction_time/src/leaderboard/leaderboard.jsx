@@ -1,10 +1,12 @@
-﻿import React from "react";
-import { RANK_CLASSES } from "../data/players";
+import React from "react";
 import "./leaderboard.css";
 
+const RANK_CLASSES = ["rank-gold", "rank-silver", "rank-bronze"];
+
 export function Leaderboard({ userName, players }) {
-  const userEntry = players.find((p) => p.isUser);
-  const userRank = userEntry ? players.indexOf(userEntry) + 1 : "-";
+  const userIndex = players.findIndex((p) => p.name === userName);
+  const userRank = userIndex >= 0 ? userIndex + 1 : "-";
+  const userEntry = userIndex >= 0 ? players[userIndex] : null;
 
   return (
     <main className="container">
@@ -36,7 +38,9 @@ export function Leaderboard({ userName, players }) {
                   <tr key={player.name} className={RANK_CLASSES[index] || ""}>
                     <td>{index + 1}</td>
                     <td>
-                      {player.isUser ? player.name + " (You)" : player.name}
+                      {player.name === userName
+                        ? player.name + " (You)"
+                        : player.name}
                     </td>
                     <td>{player.score}</td>
                   </tr>

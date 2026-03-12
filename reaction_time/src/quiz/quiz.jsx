@@ -34,7 +34,7 @@ export function Quiz({ userName, players, onScoreUpdate }) {
     if (prev.length === 0) return;
     for (let i = 0; i < players.length; i++) {
       const p = players[i];
-      if (p.isUser) continue;
+      if (p.name === userName) continue;
       const old = prev.find((o) => o.name === p.name);
       if (old && p.score > old.score) {
         setNotification(p.name + " just mastered a card!");
@@ -304,15 +304,16 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                     key={player.name}
                     className={
                       "list-group-item d-flex justify-content-between" +
-                      (player.isUser ? " active-user" : "")
+                      (player.name === userName ? " active-user" : "")
                     }
                   >
                     <span>
-                      {index + 1}. {player.isUser ? userName : player.name}
+                      {index + 1}. {player.name}
                     </span>
                     <span
                       className={
-                        "badge " + (player.isUser ? "bg-success" : "bg-primary")
+                        "badge " +
+                        (player.name === userName ? "bg-success" : "bg-primary")
                       }
                     >
                       {player.score}

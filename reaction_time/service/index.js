@@ -7,7 +7,13 @@ const app = express();
 const authCookieName = "token";
 
 let users = [];
-let scores = [];
+let scores = [
+  { name: "Lavoisier", score: 15 },
+  { name: "Curie", score: 11 },
+  { name: "Dalton", score: 8 },
+  { name: "Mendeleev", score: 5 },
+  { name: "Pasteur", score: 3 },
+];
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -92,6 +98,8 @@ app.listen(port, () => {
 // --- Helper functions ---
 
 function updateScores(newScore) {
+  scores = scores.filter((s) => s.name !== newScore.name);
+
   let found = false;
   for (const [i, prevScore] of scores.entries()) {
     if (newScore.score > prevScore.score) {
