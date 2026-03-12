@@ -25,10 +25,17 @@ export default function App() {
 
   useEffect(() => {
     if (!userName) return;
-    fetch("/api/scores")
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data) => setPlayers(data))
-      .catch(() => setPlayers([]));
+
+    function fetchScores() {
+      fetch("/api/scores")
+        .then((res) => (res.ok ? res.json() : []))
+        .then((data) => setPlayers(data))
+        .catch(() => {});
+    }
+
+    fetchScores();
+    const interval = setInterval(fetchScores, 4000);
+    return () => clearInterval(interval);
   }, [userName]);
 
   function handleLogin(name) {

@@ -7,6 +7,7 @@ const app = express();
 const authCookieName = "token";
 
 let users = [];
+const botNames = ["Lavoisier", "Curie", "Dalton", "Mendeleev", "Pasteur"];
 let scores = [
   { name: "Lavoisier", score: 15 },
   { name: "Curie", score: 11 },
@@ -14,6 +15,15 @@ let scores = [
   { name: "Mendeleev", score: 5 },
   { name: "Pasteur", score: 3 },
 ];
+
+setInterval(() => {
+  const bot = botNames[Math.floor(Math.random() * botNames.length)];
+  const entry = scores.find((s) => s.name === bot);
+  if (entry) {
+    entry.score += 1;
+    scores.sort((a, b) => b.score - a.score);
+  }
+}, 4000);
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
