@@ -106,8 +106,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Calls to third party endpoints** - The quiz page fetches a random fun fact from the Useless Facts API (`https://uselessfacts.jsph.pl/random.json`) after each correct answer.
 - [x] **Backend service endpoints** - `GET /api/scores` returns the leaderboard and `POST /api/score` submits/updates a user's score. Both are protected by auth middleware.
 - [x] **Frontend calls service endpoints** - `app.jsx` fetches and polls scores from `GET /api/scores`, submits scores via `POST /api/score`. `login.jsx` calls the auth endpoints with `fetch`.
-- [x] **Supports registration, login, logout, and restricted endpoint** - `POST /api/auth/create` registers a new user, `POST /api/auth/login` authenticates and sets a secure httpOnly cookie, `DELETE /api/auth/logout` clears the token. Score endpoints (`GET /api/scores`, `POST /api/score`) require a valid auth cookie via `verifyAuth` middleware.
-- [x] **Uses BCrypt to hash passwords** - Passwords are hashed with `bcrypt.hash(password, 10)` on registration and verified with `bcrypt.compare` on login using the `bcryptjs` library.
+- [x] **Supports registration, login, logout, and restricted endpoint** - `POST /api/auth/create` registers with bcrypt-hashed passwords, `POST /api/auth/login` authenticates and sets a secure httpOnly cookie, `DELETE /api/auth/logout` clears the token. Score endpoints require a valid auth cookie via `verifyAuth` middleware.
 
 ## 🚀 DB deliverable
 
