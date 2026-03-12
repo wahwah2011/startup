@@ -45,51 +45,44 @@ export function Quiz({ userName, players, onScoreUpdate }) {
   }, [players]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("quizProgress");
-    if (saved) {
-      const data = JSON.parse(saved);
-      if (data.userName === userName) {
-        const restoredMastered = data.masteredIds || [];
-        const restoredScore = data.score || 0;
-        setScore(restoredScore);
-        setCardsMastered(data.cardsMastered || 0);
-        setMasteredIds(restoredMastered);
-        setMissedIds(data.missedIds || []);
-        onScoreUpdate(restoredScore);
-        const resumeIndex = findNextUnmastered(
-          restoredMastered,
-          data.currentCardIndex || 0,
-        );
-        if (resumeIndex >= 0) {
-          setCurrentCardIndex(resumeIndex);
+    fetch("/api/progress")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data) {
+          const restoredMastered = data.masteredIds || [];
+          const restoredScore = data.score || 0;
+          setScore(restoredScore);
+          setCardsMastered(data.cardsMastered || 0);
+          setMasteredIds(restoredMastered);
+          setMissedIds(data.missedIds || []);
+          onScoreUpdate(restoredScore);
+          const resumeIndex = findNextUnmastered(
+            restoredMastered,
+            data.currentCardIndex || 0,
+          );
+          if (resumeIndex >= 0) {
+            setCurrentCardIndex(resumeIndex);
+          }
         }
-      }
-    }
-    setLoaded(true);
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
   }, [userName]);
 
   useEffect(() => {
     if (!loaded) return;
-    localStorage.setItem(
-      "quizProgress",
-      JSON.stringify({
-        userName,
+    fetch("/api/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         score,
         cardsMastered,
         masteredIds,
         missedIds,
         currentCardIndex,
       }),
-    );
-  }, [
-    score,
-    cardsMastered,
-    masteredIds,
-    missedIds,
-    currentCardIndex,
-    userName,
-    loaded,
-  ]);
+    }).catch(() => {});
+  }, [score, cardsMastered, masteredIds, missedIds, currentCardIndex, loaded]);
 
   const allMastered = masteredIds.length >= flashcards.length;
   const currentCard = allMastered ? null : flashcards[currentCardIndex];
@@ -193,7 +186,10 @@ export function Quiz({ userName, players, onScoreUpdate }) {
                     ) : (
                       <p className="text-muted">Loading fact...</p>
                     )}
-                    <button className="btn btn-primary mt-3" onClick={handleNextCard}>
+                    <button
+                      className="btn btn-primary mt-3"
+                      onClick={handleNextCard}
+                    >
                       Next Card
                     </button>
                   </div>

@@ -7,6 +7,7 @@ const app = express();
 const authCookieName = "token";
 
 let users = [];
+let progress = {};
 const botNames = ["Lavoisier", "Curie", "Dalton", "Mendeleev", "Pasteur"];
 let scores = [
   { name: "Lavoisier", score: 15 },
@@ -89,6 +90,18 @@ apiRouter.get("/scores", verifyAuth, (_req, res) => {
 apiRouter.post("/score", verifyAuth, (req, res) => {
   scores = updateScores(req.body);
   res.send(scores);
+});
+
+// --- Progress endpoints ---
+
+apiRouter.get("/progress", verifyAuth, (req, res) => {
+  const data = progress[req.user.username] || null;
+  res.send(data);
+});
+
+apiRouter.post("/progress", verifyAuth, (req, res) => {
+  progress[req.user.username] = req.body;
+  res.send(progress[req.user.username]);
 });
 
 // --- Error handler ---
