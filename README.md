@@ -107,7 +107,6 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Backend service endpoints** - `GET /api/scores` returns the leaderboard and `POST /api/score` submits/updates a user's score. Both are protected by auth middleware.
 - [x] **Frontend calls service endpoints** - The app fetches and polls scores from `GET /api/scores`, submits scores via `POST /api/score`. The login page calls the auth endpoints with fetch.
 - [x] **Supports registration, login, logout, and restricted endpoint** - `POST /api/auth/create` registers with bcrypt-hashed passwords, `POST /api/auth/login` authenticates and sets a secure httpOnly cookie, `DELETE /api/auth/logout` clears the token. Score endpoints require a valid auth cookie via verifyAuth middleware.
-- [x] **Uses BCrypt to hash passwords** - Passwords are hashed on registration and verified on login using the bcryptjs library.
 
 ## 🚀 DB deliverable
 
