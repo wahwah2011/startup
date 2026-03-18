@@ -4,6 +4,15 @@ const express = require("express");
 const uuid = require("uuid");
 const app = express();
 
+const { MongoClient } = require("mongodb");
+const config = require("./dbConfig.json");
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const client = new MongoClient(url);
+const db = client.db("reaction_time");
+const userCollection = db.collection("user");
+const scoreCollection = db.collection("score");
+
 const authCookieName = "token";
 
 let users = [];
