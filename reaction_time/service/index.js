@@ -7,7 +7,7 @@ const app = express();
 const { MongoClient } = require("mongodb");
 const config = require("./dbConfig.json");
 
-const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const url = `mongodb://${config.userName}:${config.password}@${config.hostname}/?ssl=true&replicaSet=atlas-zoukv7-shard-0&authSource=admin&appName=cs260`;
 const client = new MongoClient(url);
 const db = client.db("reaction_time");
 const userCollection = db.collection("user");
