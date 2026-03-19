@@ -12,28 +12,19 @@ const client = new MongoClient(url);
 const db = client.db("reaction_time");
 const userCollection = db.collection("user");
 const scoreCollection = db.collection("score");
+const progressCollection = db.collection("progress");
+
+(async function testConnection() {
+  try {
+    await db.command({ ping: 1 });
+    console.log("Connected to database");
+  } catch (ex) {
+    console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+    process.exit(1);
+  }
+})();
 
 const authCookieName = "token";
-
-let users = [];
-let progress = {};
-const botNames = ["Lavoisier", "Curie", "Dalton", "Mendeleev", "Pasteur"];
-let scores = [
-  { name: "Lavoisier", score: 15 },
-  { name: "Curie", score: 11 },
-  { name: "Dalton", score: 8 },
-  { name: "Mendeleev", score: 5 },
-  { name: "Pasteur", score: 3 },
-];
-
-setInterval(() => {
-  const bot = botNames[Math.floor(Math.random() * botNames.length)];
-  const entry = scores.find((s) => s.name === bot);
-  if (entry) {
-    entry.score += 1;
-    scores.sort((a, b) => b.score - a.score);
-  }
-}, 4000);
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -60,8 +51,9 @@ apiRouter.post("/auth/login", async (req, res) => {
   const user = await findUser("username", req.body.username);
   if (user) {
     if (await bcrypt.compare(req.body.password, user.password)) {
-      user.token = uuid.v4();
-      setAuthCookie(res, user.token);
+      const token = uuid.v4();
+      await userCollection.updateOne({ username: user.username }, { $set: { token } });
+      setAuthCookie(res, token);
       res.send({ username: user.username });
       return;
     }
@@ -72,7 +64,7 @@ apiRouter.post("/auth/login", async (req, res) => {
 apiRouter.delete("/auth/logout", async (req, res) => {
   const user = await findUser("token", req.cookies[authCookieName]);
   if (user) {
-    delete user.token;
+    await userCollection.updateOne({ username: user.username }, { $unset: { token: 1 } });
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
@@ -92,25 +84,32 @@ const verifyAuth = async (req, res, next) => {
 
 // --- Score endpoints ---
 
-apiRouter.get("/scores", verifyAuth, (_req, res) => {
+apiRouter.get("/scores", verifyAuth, async (_req, res) => {
+  const scores = await getHighScores();
   res.send(scores);
 });
 
-apiRouter.post("/score", verifyAuth, (req, res) => {
-  scores = updateScores(req.body);
+apiRouter.post("/score", verifyAuth, async (req, res) => {
+  await scoreCollection.insertOne(req.body);
+  const scores = await getHighScores();
   res.send(scores);
 });
 
 // --- Progress endpoints ---
 
-apiRouter.get("/progress", verifyAuth, (req, res) => {
-  const data = progress[req.user.username] || null;
-  res.send(data);
+apiRouter.get("/progress", verifyAuth, async (req, res) => {
+  const data = await progressCollection.findOne({ username: req.user.username });
+  res.send(data || null);
 });
 
-apiRouter.post("/progress", verifyAuth, (req, res) => {
-  progress[req.user.username] = req.body;
-  res.send(progress[req.user.username]);
+apiRouter.post("/progress", verifyAuth, async (req, res) => {
+  const update = { ...req.body, username: req.user.username };
+  await progressCollection.updateOne(
+    { username: req.user.username },
+    { $set: update },
+    { upsert: true }
+  );
+  res.send(update);
 });
 
 // --- Error handler ---
@@ -129,27 +128,9 @@ app.listen(port, () => {
 
 // --- Helper functions ---
 
-function updateScores(newScore) {
-  scores = scores.filter((s) => s.name !== newScore.name);
-
-  let found = false;
-  for (const [i, prevScore] of scores.entries()) {
-    if (newScore.score > prevScore.score) {
-      scores.splice(i, 0, newScore);
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    scores.push(newScore);
-  }
-
-  if (scores.length > 10) {
-    scores.length = 10;
-  }
-
-  return scores;
+async function getHighScores() {
+  const cursor = scoreCollection.find({}, { sort: { score: -1 }, limit: 10 });
+  return cursor.toArray();
 }
 
 async function createUser(username, password) {
@@ -160,14 +141,14 @@ async function createUser(username, password) {
     password: passwordHash,
     token: uuid.v4(),
   };
-  users.push(user);
+  await userCollection.insertOne(user);
 
   return user;
 }
 
 async function findUser(field, value) {
   if (!value) return null;
-  return users.find((u) => u[field] === value);
+  return userCollection.findOne({ [field]: value });
 }
 
 function setAuthCookie(res, authToken) {
