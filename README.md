@@ -112,8 +112,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Leaderboard scores are stored in a `score` collection using upsert so each user has one entry updated by `cardsMastered`. Quiz progress (mastered cards, missed cards, current index) is persisted in a `progress` collection so users can resume where they left off across sessions.
+- [x] **Stores credentials in MongoDB** - User credentials are stored in a `user` collection with bcrypt-hashed passwords. Registration inserts a new user document, login queries by username and compares hashes, and auth tokens are stored/removed on the user document for session management via secure httpOnly cookies.
 
 ## 🚀 WebSocket deliverable
 
