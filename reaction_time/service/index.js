@@ -90,7 +90,11 @@ apiRouter.get("/scores", verifyAuth, async (_req, res) => {
 });
 
 apiRouter.post("/score", verifyAuth, async (req, res) => {
-  await scoreCollection.insertOne(req.body);
+  await scoreCollection.updateOne(
+    { name: req.body.name },
+    { $set: { score: req.body.score } },
+    { upsert: true }
+  );
   const scores = await getHighScores();
   res.send(scores);
 });
