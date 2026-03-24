@@ -51,11 +51,12 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         if (data) {
           const restoredMastered = data.masteredIds || [];
           const restoredScore = data.score || 0;
+          const restoredCardsMastered = data.cardsMastered || 0;
           setScore(restoredScore);
-          setCardsMastered(data.cardsMastered || 0);
+          setCardsMastered(restoredCardsMastered);
           setMasteredIds(restoredMastered);
           setMissedIds(data.missedIds || []);
-          onScoreUpdate(restoredScore);
+          onScoreUpdate(restoredCardsMastered);
           const resumeIndex = findNextUnmastered(
             restoredMastered,
             data.currentCardIndex || 0,
@@ -98,14 +99,15 @@ export function Quiz({ userName, players, onScoreUpdate }) {
     if (correct) {
       const newScore = score + 1;
       setScore(newScore);
-      onScoreUpdate(newScore);
       const newMastered = masteredIds.includes(currentCard.id)
         ? masteredIds
         : [...masteredIds, currentCard.id];
 
       if (!masteredIds.includes(currentCard.id)) {
-        setCardsMastered((c) => c + 1);
+        const newCardsMastered = cardsMastered + 1;
+        setCardsMastered(newCardsMastered);
         setMasteredIds(newMastered);
+        onScoreUpdate(newCardsMastered);
       }
       setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
       setFeedback("correct");
