@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { flashcards } from "../data/flashcards";
+import { GameNotifier, GameEvent } from "../gameNotifier";
 import "./quiz.css";
 
 function findNextUnmastered(masteredIds, startIndex) {
@@ -108,6 +109,10 @@ export function Quiz({ userName, players, onScoreUpdate }) {
         setCardsMastered(newCardsMastered);
         setMasteredIds(newMastered);
         onScoreUpdate(newCardsMastered);
+        GameNotifier.broadcastEvent(userName, GameEvent.CardMastered, {
+          cardName: currentCard.name,
+          score: newCardsMastered,
+        });
       }
       setMissedIds((prev) => prev.filter((id) => id !== currentCard.id));
       setFeedback("correct");
