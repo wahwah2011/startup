@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { GameNotifier, GameEvent } from "../gameNotifier";
 import "./leaderboard.css";
 
 const RANK_CLASSES = ["rank-gold", "rank-silver", "rank-bronze"];
 
 export function Leaderboard({ userName, players }) {
+  const [connected, setConnected] = useState(true);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    function handleEvent(event) {
+      if (event.type === GameEvent.System) {
+        setConnected(event.value.msg === "connected");
+      } else if (event.type === GameEvent.CardMastered && event.from !== userName) {
+        setEvents((prev) => [
+          ...prev.slice(-4),
+          `${event.from} mastered ${event.value.cardName}`,
+        ]);
+      }
+    }
+    GameNotifier.addHandler(handleEvent);
+    return () => GameNotifier.removeHandler(handleEvent);
+  }, [userName]);
+
   const userIndex = players.findIndex((p) => p.name === userName);
   const userRank = userIndex >= 0 ? userIndex + 1 : "-";
   const userEntry = userIndex >= 0 ? players[userIndex] : null;
@@ -19,10 +38,25 @@ export function Leaderboard({ userName, players }) {
               <span className="status-indicator"></span>
               <p className="mb-0">
                 Live Updates:{" "}
-                <span className="badge bg-success">Connected</span>
+                <span className={`badge ${connected ? "bg-success" : "bg-danger"}`}>
+                  {connected ? "Connected" : "Disconnected"}
+                </span>
               </p>
             </div>
           </div>
+
+          {events.length > 0 && (
+            <div className="card info-card mb-3">
+              <div className="card-body py-2">
+                <p className="mb-1 fw-bold text-center">Live Activity</p>
+                {events.map((msg, i) => (
+                  <p key={i} className="mb-0 text-center small text-muted">
+                    {msg}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="table-responsive">
             <table className="table table-dark table-striped table-hover">
