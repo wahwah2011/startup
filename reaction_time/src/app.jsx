@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -11,6 +11,7 @@ import { Login } from "./login/login";
 import { Quiz } from "./quiz/quiz";
 import { Leaderboard } from "./leaderboard/leaderboard";
 import { About } from "./about/about";
+import { GameNotifier, GameEvent } from "./gameNotifier";
 
 export default function App() {
   const [userName, setUserName] = useState(null);
@@ -23,20 +24,29 @@ export default function App() {
     }
   }, []);
 
+  const fetchScores = useCallback(() => {
+    fetch("/api/scores")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => setPlayers(data))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!userName) return;
+    fetchScores();
+  }, [userName, fetchScores]);
+
   useEffect(() => {
     if (!userName) return;
 
-    function fetchScores() {
-      fetch("/api/scores")
-        .then((res) => (res.ok ? res.json() : []))
-        .then((data) => setPlayers(data))
-        .catch(() => {});
+    function handleEvent(event) {
+      if (event.type === GameEvent.CardMastered) {
+        fetchScores();
+      }
     }
-
-    fetchScores();
-    const interval = setInterval(fetchScores, 4000);
-    return () => clearInterval(interval);
-  }, [userName]);
+    GameNotifier.addHandler(handleEvent);
+    return () => GameNotifier.removeHandler(handleEvent);
+  }, [userName, fetchScores]);
 
   function handleLogin(name) {
     localStorage.setItem("userName", name);
