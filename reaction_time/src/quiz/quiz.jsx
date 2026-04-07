@@ -26,24 +26,17 @@ export function Quiz({ userName, players, onScoreUpdate }) {
   const [funFact, setFunFact] = useState(null);
   const [showFact, setShowFact] = useState(false);
   const nextCardRef = useRef(null);
-  const prevPlayersRef = useRef(players);
 
   useEffect(() => {
-    const prev = prevPlayersRef.current;
-    prevPlayersRef.current = players;
-
-    if (prev.length === 0) return;
-    for (let i = 0; i < players.length; i++) {
-      const p = players[i];
-      if (p.name === userName) continue;
-      const old = prev.find((o) => o.name === p.name);
-      if (old && p.score > old.score) {
-        setNotification(p.name + " just mastered a card!");
-        setTimeout(() => setNotification(null), 2500);
-        break;
+    function handleEvent(event) {
+      if (event.type === GameEvent.CardMastered && event.from !== userName) {
+        setNotification(`${event.from} just mastered ${event.value.cardName}!`);
+        setTimeout(() => setNotification(null), 3000);
       }
     }
-  }, [players]);
+    GameNotifier.addHandler(handleEvent);
+    return () => GameNotifier.removeHandler(handleEvent);
+  }, [userName]);
 
   useEffect(() => {
     fetch("/api/progress")
