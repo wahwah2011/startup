@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { GameNotifier, GameEvent } from "../gameNotifier";
 import "./login.css";
 
 export function Login({ userName, onLogin, onLogout }) {
   const [nameInput, setNameInput] = useState("");
   const [password, setPassword] = useState("");
-  const [onlineCount, setOnlineCount] = useState(3);
+  const [onlineCount, setOnlineCount] = useState(GameNotifier.onlineCount || 1);
   const [errorMsg, setErrorMsg] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setOnlineCount((prev) => {
-        const delta = Math.random() < 0.5 ? 1 : -1;
-        const next = prev + delta;
-        return Math.max(1, Math.min(next, 12));
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
+    function handleEvent(event) {
+      if (event.type === GameEvent.OnlineCount) {
+        setOnlineCount(event.value);
+      }
+    }
+    GameNotifier.addHandler(handleEvent);
+    return () => GameNotifier.removeHandler(handleEvent);
   }, []);
 
   async function handleLogin(e) {
